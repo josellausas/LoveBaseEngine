@@ -13,6 +13,67 @@ local imgy = 100
 local blueTile = nil
 local redTile = nil
 
+local RenderObject = 
+{
+	-- The items
+	allItems = {},
+	-- Constructor
+	new = function(self, renderImage)
+		local renderObjInstance = 
+		{
+			x = 100,
+			y = 100,
+			image = renderImage
+		}
+		
+		-- Keep track of the things
+		table.insert(self.allItems, renderObjInstance)
+		
+		return renderObjInstance
+	end,
+
+	draw = function(self)
+		for i,v in pairs(self.allItems) do
+			--todo
+			love.graphics.draw(v.image, v.x, v.y)
+		end
+	end
+}
+
+local MovingObject = 
+{
+	allItems = {},
+	new = function(self, renderImage)
+		
+		-- Inheritance :)
+		local movingInstance = RenderObject:new(renderImage)
+		
+		-- Add extra things here:
+		movingInstance.vx = 0
+		movingInstance.vy = -25
+
+		-- Fwd vector
+		movingInstance.fwd = {
+			x = 0,
+			y = 1
+		}
+
+		table.insert(self.allItems, movingInstance)
+
+		return movingInstance
+	end,
+	update = function(self, dt)
+		for k,v in pairs(self.allItems) do
+			deltaX = v.vx * dt
+			deltaY = v.vy * dt
+
+			v.x = v.x + deltaX
+			v.y = v.y + deltaY
+		end
+	end
+}
+
+
 function love.load()
 	love.graphics.setNewFont(12)
 	love.graphics.setBackgroundColor(255,255,255)
@@ -21,24 +82,25 @@ function love.load()
 	blueTile = love.graphics.newImage("art/tileBlue_04.png")
 	redTile = love.graphics.newImage("art/tileRed_04.png")
 	playerShip = love.graphics.newImage("art/playerShip3_blue.png")
+
+
+	MovingObject:new(playerShip)
+
+
 end
 
 function love.update(dt)
 	if love.keyboard.isDown("up") then
 		num = num + 100 * dt -- 100 hz
 	end
+
+	MovingObject:update(dt)
 end
 
 function love.draw()
-	-- Color setting is global.
-	love.graphics.setColor(0,0,0)
-	love.graphics.print("Hello World", 400, 400)
+	
 
-	love.graphics.setColor(255,255,255)
-	love.graphics.draw(blueTile, imgx, imgy)
-	love.graphics.draw(redTile, 250,100)
-	love.graphics.draw(playerShip, playerX, playerY)
-
+	RenderObject:draw()
 	
 end
 
