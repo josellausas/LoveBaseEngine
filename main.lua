@@ -10,6 +10,9 @@ Todos los derechos reservadas.
 local imgx = 100
 local imgy = 100
 
+local blueTile = nil
+local redTile = nil
+
 function love.load()
 	love.graphics.setNewFont(12)
 	love.graphics.setBackgroundColor(255,255,255)
@@ -17,6 +20,7 @@ function love.load()
 	-- Load the images here
 	blueTile = love.graphics.newImage("art/tileBlue_04.png")
 	redTile = love.graphics.newImage("art/tileRed_04.png")
+	playerShip = love.graphics.newImage("art/playerShip3_blue.png")
 end
 
 function love.update(dt)
@@ -33,6 +37,7 @@ function love.draw()
 	love.graphics.setColor(255,255,255)
 	love.graphics.draw(blueTile, imgx, imgy)
 	love.graphics.draw(redTile, 250,100)
+	love.graphics.draw(playerShip, playerX, playerY)
 
 	
 end
