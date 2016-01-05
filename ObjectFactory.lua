@@ -2,6 +2,15 @@
 
 local rotate90 = math.rad(90)
 
+
+--[[  RenderObject
+
+	The most basic render object.
+	Note: This is not offset to the center.
+	This is used for things that do not move.
+	And are usually aligned to a grid. 
+	If you need to center postion or move, use MovingObject
+]]
 local RenderObject = 
 {
 	-- Constructor
@@ -15,13 +24,17 @@ local RenderObject =
 			draw = function(self)
 				love.graphics.draw(self.image, self.x, self.y)
 			end,
-			update = function(self, dt)
+			parent_update = function(self, dt)
 				self.lifeTime = self.lifeTime + dt
 			end
 		}
 		return renderObjInstance
 	end,
 }
+
+
+
+
 
 local MovingObject = 
 {
@@ -54,6 +67,7 @@ local MovingObject =
 		end
 
 		movingInstance.moveUpdate = function(self, dt)
+			self:parent_update(dt)
 			-- Move towards the forwards
 			local fwdVector = {
 				x = math.cos(self.heading),
@@ -62,11 +76,11 @@ local MovingObject =
 
 			self.x = self.x + (fwdVector.x * self.speed * dt)
 			self.y = self.y + (fwdVector.y * dt * self.speed)
-			self.lifeTime = self.lifeTime + dt
 		end
 
 		-- Knows how to update itself
 		movingInstance.update = function(self, dt)
+			
 			self:moveUpdate(dt)
 		end
 
@@ -116,12 +130,20 @@ local IntelligentObject =
 			self:setHeading(fwd.x, fwd.y)
 		end
 
-		ai.update = function(self, dt)
+		ai.intelligentUpdate = function(self, dt)
+			-- Call the parents update
 			self:moveUpdate(dt)
 
 			if not (self.target == nil) then
 				self:lookAt(self.target)
 			end
+
+		end
+
+
+		ai.update = function(self, dt)
+			-- Polymorphism the Lua way
+			self:intelligentUpdate(dt)
 		end
 
 
@@ -167,7 +189,7 @@ local ObjectFactory =
 			v:update(dt)
 		end
 	end,
-	
+
 	draw = function(self)
 		for k,v in pairs(self.allObjects) do
 			v:draw()
