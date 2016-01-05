@@ -135,6 +135,7 @@ local IntelligentObject =
 local ObjectFactory = 
 {
 	allObjects = {},
+
 	newAI = function(self, img, posX, posY, target)
 		local inst = IntelligentObject:new(img,target)
 		inst.x = posX
@@ -143,6 +144,7 @@ local ObjectFactory =
 		table.insert(self.allObjects, inst)
 		return inst
 	end,
+
 	newStatic = function(self, img, posX, posY)
 		local inst = RenderObject:new(img)
 		inst.x = posX
@@ -150,6 +152,7 @@ local ObjectFactory =
 		table.insert(self.allObjects, inst)
 		return inst
 	end,
+
 	new = function(self, img, posX, posY)
 		local instance = MovingObject:new(img)
 		instance.x = posX
@@ -158,11 +161,13 @@ local ObjectFactory =
 		table.insert(self.allObjects, instance)
 		return instance
 	end,
+
 	update = function(self, dt)
 		for k,v in pairs(self.allObjects) do
 			v:update(dt)
 		end
 	end,
+	
 	draw = function(self)
 		for k,v in pairs(self.allObjects) do
 			v:draw()
