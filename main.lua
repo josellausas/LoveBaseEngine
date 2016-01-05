@@ -15,36 +15,25 @@ local redTile = nil
 
 local RenderObject = 
 {
-	-- The items
-	allItems = {},
 	-- Constructor
 	new = function(self, renderImage)
 		local renderObjInstance = 
 		{
 			x = 100,
 			y = 100,
-			image = renderImage
+			lifeTime = 0,
+			image = renderImage,
+			draw = function(self)
+				love.graphics.draw(self.image, self.x, self.y)
+			end
 		}
-		
-		-- Keep track of the things
-		table.insert(self.allItems, renderObjInstance)
-		
 		return renderObjInstance
 	end,
-
-	draw = function(self)
-		for i,v in pairs(self.allItems) do
-			--todo
-			love.graphics.draw(v.image, v.x, v.y)
-		end
-	end
 }
 
 local MovingObject = 
 {
-	allItems = {},
 	new = function(self, renderImage)
-		
 		-- Inheritance :)
 		local movingInstance = RenderObject:new(renderImage)
 		
@@ -58,20 +47,41 @@ local MovingObject =
 			y = 1
 		}
 
-		table.insert(self.allItems, movingInstance)
+		-- Knows how to update itself
+		movingInstance.update = function(self, dt)
+			self.x = self.x + (self.vx * dt)
+			self.y = self.y + (self.vy * dt)
+			self.lifeTime = self.lifeTime + dt
+		end
 
 		return movingInstance
-	end,
-	update = function(self, dt)
-		for k,v in pairs(self.allItems) do
-			deltaX = v.vx * dt
-			deltaY = v.vy * dt
-
-			v.x = v.x + deltaX
-			v.y = v.y + deltaY
-		end
 	end
 }
+
+local ObjectFactory = 
+{
+	allObjects = {},
+	new = function(self, img, posX, posY)
+		local instance = MovingObject:new(img)
+		instance.x = posX
+		instance.y = posY
+
+		table.insert(self.allObjects, instance)
+		return instance
+	end,
+	update = function(self, dt)
+		for k,v in pairs(self.allObjects) do
+			v:update(dt)
+		end
+	end,
+	draw = function(self)
+		for k,v in pairs(self.allObjects) do
+			v:draw()
+		end
+	end,
+
+}
+
 
 
 function love.load()
@@ -84,7 +94,13 @@ function love.load()
 	playerShip = love.graphics.newImage("art/playerShip3_blue.png")
 
 
-	MovingObject:new(playerShip)
+	ObjectFactory:new(playerShip, 100, 500)
+	ObjectFactory:new(playerShip, 200, 500)
+	ObjectFactory:new(playerShip, 300, 500)
+	ObjectFactory:new(playerShip, 400, 500)
+	ObjectFactory:new(playerShip, 500, 500)
+
+
 
 
 end
@@ -94,13 +110,12 @@ function love.update(dt)
 		num = num + 100 * dt -- 100 hz
 	end
 
-	MovingObject:update(dt)
+	ObjectFactory:update(dt)
 end
 
 function love.draw()
 	
-
-	RenderObject:draw()
+	ObjectFactory:draw()
 	
 end
 
