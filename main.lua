@@ -7,24 +7,18 @@ Todos los derechos reservadas.
 
 ]]
 
-local imgx = 100
-local imgy = 100
-
-local blueTile = nil
-local redTile  = nil
-
-local target = nil
-
 local ObjectFactory = require("ObjectFactory")
 
-local ai_01 = nil
-local ai_02 = nil
-local ai_03 = nil
-local ai_04 = nil
-local ai_05 = nil
-
-
-
+local imgx 		= 100
+local imgy 		= 100
+local blueTile 	= nil
+local redTile  	= nil
+local target 	= nil
+local ai_01 	= nil
+local ai_02 	= nil
+local ai_03 	= nil
+local ai_04 	= nil
+local ai_05 	= nil
 
 
 function love.load()
