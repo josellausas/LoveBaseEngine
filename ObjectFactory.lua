@@ -14,6 +14,9 @@ local RenderObject =
 			image = renderImage,
 			draw = function(self)
 				love.graphics.draw(self.image, self.x, self.y)
+			end,
+			update = function(self, dt)
+				self.lifeTime = self.lifeTime + dt
 			end
 		}
 		return renderObjInstance
@@ -26,29 +29,49 @@ local MovingObject =
 		-- Inheritance :)
 		local movingInstance = RenderObject:new(renderImage)
 		
+		-- Centered rotation
+		local width,height = renderImage:getDimensions()
+
 		-- Add extra things here:
-		movingInstance.vx = 0
-		movingInstance.vy = -25
+		movingInstance.speed = 0
+		movingInstance.spec = {
+			w = width,
+			h = height,
+			offX = width * 0.5,
+			offY = height * 0.5
+		}
+
+		movingInstance.scale = {
+			x = 1,
+			y = 1,
+		}
 
 		-- Fwd vector
 		movingInstance.heading = 0
-
 		movingInstance.setHeading = function(self, x, y)
 			--[[Returns the forward vector in radians]]
 			self.heading = math.atan2(y, x)
 		end
 
-		-- Knows how to update itself
-		movingInstance.update = function(self, dt)
-			self.x = self.x + (self.vx * dt)
-			self.y = self.y + (self.vy * dt)
+		movingInstance.moveUpdate = function(self, dt)
+			-- Move towards the forwards
+			local fwdVector = {
+				x = math.cos(self.heading),
+				y = math.sin(self.heading)
+			}
+
+			self.x = self.x + (fwdVector.x * self.speed * dt)
+			self.y = self.y + (fwdVector.y * dt * self.speed)
 			self.lifeTime = self.lifeTime + dt
 		end
 
+		-- Knows how to update itself
+		movingInstance.update = function(self, dt)
+			self:moveUpdate(dt)
+		end
+
 		movingInstance.draw = function(self)
-			-- Centered rotation
-			local width,height = self.image:getDimensions()
-			love.graphics.draw(self.image, self.x, self.y, self.heading + rotate90, 1, 1, width * 0.5, height * 0.5)
+			love.graphics.draw(self.image, self.x, self.y, self.heading + rotate90, self.scale.x, self.scale.y, self.spec.offX, self.spec.offY)
 		end
 
 		-- Para arriba:
@@ -94,14 +117,9 @@ local IntelligentObject =
 		end
 
 		ai.update = function(self, dt)
-			-- Do the parent behavior
-			self.x = self.x + (self.vx * dt)
-			self.y = self.y + (self.vy * dt)
-			self.lifeTime = self.lifeTime + dt
+			self:moveUpdate(dt)
 
-			if(self.target == nil) then
-				
-			else
+			if not (self.target == nil) then
 				self:lookAt(self.target)
 			end
 		end
@@ -122,6 +140,13 @@ local ObjectFactory =
 		inst.x = posX
 		inst.y = posY
 
+		table.insert(self.allObjects, inst)
+		return inst
+	end,
+	newStatic = function(self, img, posX, posY)
+		local inst = RenderObject:new(img)
+		inst.x = posX
+		inst.y = posY
 		table.insert(self.allObjects, inst)
 		return inst
 	end,
