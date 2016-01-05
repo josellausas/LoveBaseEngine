@@ -3,6 +3,39 @@
 local rotate90 = math.rad(90)
 
 
+--[[ FUNC TABLES??? ]]
+local update_lifeTime = function(self, dt)
+	self.lifeTime = self.lifeTime + dt
+end
+
+local update_movement = function(self, dt)
+	-- Move towards the forwards vector at the given speed.
+	local fwdVector = {
+		x = math.cos(self.heading),
+		y = math.sin(self.heading)
+	}
+
+	self.x = self.x + (fwdVector.x * self.speed * dt)
+	self.y = self.y + (fwdVector.y * dt * self.speed)
+end
+
+local update_intelligence = function(self, dt)
+	-- Just looks at the objective for now
+	if not (self.target == nil) then
+		self:lookAt(self.target)
+	end
+end
+
+local draw_basic = function(self)
+	love.graphics.draw(self.image, self.x, self.y)
+end
+
+local draw_advanced = function(self)
+	love.graphics.draw(self.image, self.x, self.y, self.heading + rotate90, self.scale.x, self.scale.y, self.spec.offX, self.spec.offY)
+end
+
+
+
 --[[  RenderObject
 
 	The most basic render object.
@@ -20,20 +53,13 @@ local RenderObject =
 			x = 100,
 			y = 100,
 			lifeTime = 0,
-			image = renderImage,
-			draw = function(self)
-				love.graphics.draw(self.image, self.x, self.y)
-			end,
-			parent_update = function(self, dt)
-				self.lifeTime = self.lifeTime + dt
-			end
+			image 	= renderImage,
+			draw 	= draw_basic,
+			update 	= update_func,
 		}
 		return renderObjInstance
-	end,
+	end,	
 }
-
-
-
 
 
 local MovingObject = 
@@ -66,31 +92,18 @@ local MovingObject =
 			self.heading = math.atan2(y, x)
 		end
 
-		movingInstance.moveUpdate = function(self, dt)
-			self:parent_update(dt)
-			-- Move towards the forwards
-			local fwdVector = {
-				x = math.cos(self.heading),
-				y = math.sin(self.heading)
-			}
 
-			self.x = self.x + (fwdVector.x * self.speed * dt)
-			self.y = self.y + (fwdVector.y * dt * self.speed)
-		end
-
-		-- Knows how to update itself
+	
+		-- Polymorphysm :)
 		movingInstance.update = function(self, dt)
-			
-			self:moveUpdate(dt)
+			update_lifeTime(self, dt)
+			update_movement(self, dt)
 		end
 
+		-- Completely overrides parent's implementation
 		movingInstance.draw = function(self)
-			love.graphics.draw(self.image, self.x, self.y, self.heading + rotate90, self.scale.x, self.scale.y, self.spec.offX, self.spec.offY)
+			draw_advanced(self)
 		end
-
-		-- Para arriba:
-		movingInstance:setHeading(0, -1)
-		print("Heading: " .. movingInstance.heading)
 
 		return movingInstance
 	end
@@ -130,26 +143,14 @@ local IntelligentObject =
 			self:setHeading(fwd.x, fwd.y)
 		end
 
-		ai.intelligentUpdate = function(self, dt)
-			-- Call the parents update
-			self:moveUpdate(dt)
-
-			if not (self.target == nil) then
-				self:lookAt(self.target)
-			end
-
-		end
-
-
+		-- Polymorphism
 		ai.update = function(self, dt)
-			-- Polymorphism the Lua way
-			self:intelligentUpdate(dt)
+			-- Call the parents update
+			update_lifeTime(self, dt)
+			update_movement(self, dt)
+			update_intelligence(self, dt)
 		end
 
-
-		--[[ai.draw = function(self, dt)
-			TODO: Implement this with forward looking
-		end]]
 		return ai
 	end,
 }
