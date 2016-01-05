@@ -53,6 +53,7 @@ function love.update(dt)
 	end
 
 	ObjectFactory:update(dt)
+
 end
 
 function love.draw()

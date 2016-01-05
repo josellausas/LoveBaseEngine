@@ -28,8 +28,24 @@ end
 --[[Looks at the target if he have one.]]
 local update_intelligence = function(self, dt)
 	-- Just looks at the objective for now
+	if (self.target == nil) then
+		-- Check for a wayPoint and set Target
+		print("At target!")
+	end
+
+	-- If we have a valid target, move towards it. otherwhise stop.
 	if not (self.target == nil) then
 		self:lookAt(self.target)
+
+		-- Un indicate the target if we are close enough
+		local distSq = self:distSqToTarget()
+		
+		if(distSq < 25) then
+			self.target = nil
+		end
+	else
+		self.speed = 0
+		self.heading = self.heading + dt
 	end
 end
 
@@ -61,13 +77,13 @@ local RenderObject =
 	-- Constructor
 	new = function(self, renderImage)
 		local renderObjInstance = 
-		{
-			x = 100,
-			y = 100,
-			lifeTime = 0,
-			image 	= renderImage,
-			draw 	= draw_basic,
-			update 	= update_func,
+		{	
+			x = 100,				-- X position 
+			y = 100,				-- Y position
+			lifeTime = 0,			-- # of seconds it's been alive
+			image 	= renderImage,	-- The image rendered
+			draw 	= draw_basic,	-- The drawFunc
+			update 	= update_func,	-- The updateFunc
 		}
 		return renderObjInstance
 	end,	
@@ -78,47 +94,45 @@ local RenderObject =
 local MovingObject = 
 {
 	new = function(self, renderImage)
-		-- Inheritance :)
-		local movingInstance = RenderObject:new(renderImage)
-		
-		-- Centered rotation
-		local width,height = renderImage:getDimensions()
+		-- Inherits from a render object
+		local inst = RenderObject:new(renderImage)
 
-		-- Add extra things here:
-		movingInstance.speed = 0
-		movingInstance.spec = {
+		-- Movement speed
+		inst.speed = 0
+
+		-- Drawing scale
+		inst.scale = { x = 1, y = 1 }
+
+		-- Offsets for drawing at the center
+		local width,height = renderImage:getDimensions()
+		inst.spec = {
 			w = width,
 			h = height,
 			offX = width * 0.5,
 			offY = height * 0.5
 		}
 
-		movingInstance.scale = {
-			x = 1,
-			y = 1,
-		}
+		-- Our forwards.
+		inst.heading = 0 -- In Radians
+		
 
-		-- Fwd vector
-		movingInstance.heading = 0
-		movingInstance.setHeading = function(self, x, y)
-			--[[Returns the forward vector in radians]]
+		inst.setHeading = function(self, x, y)
+			-- Converts a foward vector to radians. The vector mush be normalized!!!
 			self.heading = math.atan2(y, x)
 		end
 
-
-	
 		-- Polymorphysm :)
-		movingInstance.update = function(self, dt)
+		inst.update = function(self, dt)
 			update_lifeTime(self, dt)
 			update_movement(self, dt)
 		end
 
 		-- Completely overrides parent's implementation
-		movingInstance.draw = function(self)
+		inst.draw = function(self)
 			draw_advanced(self)
 		end
 
-		return movingInstance
+		return inst
 	end
 }
 
@@ -127,30 +141,36 @@ local IntelligentObject =
 {
 	-- Our constructor method.
 	new = function(self, renderImage, target)
-		-- The new instance we are creating
+		-- Inherits from a moving object
 		local ai = MovingObject:new(renderImage)
-		-- Sets our target
+		
+		-- Tracks a moving target
 		ai.target = target
 
-		--[[ Sets the heading in the direciton of the target ]]
+		-- Sets the heading towards the given coordinate
 		ai.lookAt = function(self, coord)
 			-- Get the targets position.
 			local targetX = coord.x
 			local targetY = coord.y
+			
 			-- Get a vector from us to the target (distVector)
 			local distX = targetX - self.x
 			local distY = targetY - self.y
+			
 			-- Figure out our forward vector (has to be normalized)
 			local fwd = {
 				x = distX,
 				y = distY
 			}
+			
 			-- Normalize to set the heading vector.
 			local length = math.sqrt((distX ^ 2) + (distY ^ 2))
+			
 			if(length > 0) then
 				fwd.x = distX / length
 				fwd.y = distY / length
 			end
+			
 			-- Sets the heading to our forward vector.
 			self:setHeading(fwd.x, fwd.y)
 		end
@@ -160,6 +180,18 @@ local IntelligentObject =
 			update_lifeTime(self, dt)
 			update_movement(self, dt)
 			update_intelligence(self, dt)
+		end
+
+		ai.distSqToTarget = function(self)
+			if not (self.target == nil) then
+				-- Get a vector from us to the target (distVector)
+				local distX = self.target.x - self.x
+				local distY = self.target.y- self.y
+
+				return (distX^2 + distY^2)
+			else
+				return 99999
+			end
 		end
 
 		return ai
