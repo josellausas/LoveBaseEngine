@@ -18,9 +18,9 @@ local update_movement = function(self, dt)
 		x = math.cos(self.heading),
 		y = math.sin(self.heading)
 	}
-	-- Update the position with deltas.
+	-- Update the position with deltas. Remember the physics from shcool?
 	self.x = self.x + (fwdVector.x * self.speed * dt)
-	self.y = self.y + (fwdVector.y * dt * self.speed)
+	self.y = self.y + (fwdVector.y * self.speed * dt)
 end
 
 
