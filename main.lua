@@ -9,8 +9,7 @@ Todos los derechos reservadas.
 
 local ObjectFactory = require("ObjectFactory")
 
-local imgx 		= 100
-local imgy 		= 100
+
 local blueTile 	= nil
 local redTile  	= nil
 local target 	= nil
@@ -37,7 +36,6 @@ function love.load()
 	ai_03 = ObjectFactory:newAI(playerShip, 300, 500, target)
 	ai_04 = ObjectFactory:newAI(playerShip, 400, 500, target)
 	ai_05 = ObjectFactory:newAI(playerShip, 500, 500, target)
-	
 
 end
 
@@ -60,7 +58,6 @@ function love.mousepressed(x,y,button)
 	print("mouse pressed")
 	print(button)
 	if button == 1 then
-		imgx, imgy = x,y
 		target.x = x
 		target.y = y
 	end
@@ -74,17 +71,18 @@ end
 
 function love.keypressed(key)
 	if key == 'b' then
-		
-		ai_01.speed = 25
-		ai_02.speed = 12
-		ai_03.speed = 31
-		ai_04.speed = 24
-		ai_05.speed = 100
+		-- Makes them moove at diferent speeds
+		ai_01.speed = 12
+		ai_02.speed = 20
+		ai_03.speed = 50
+		ai_04.speed = 70
+		ai_05.speed = 120
 	end
 end
 
 function love.keyreleased(key)
 	-- The key was released
+
 end
 
 function love.focus(f)
