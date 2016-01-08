@@ -5,13 +5,13 @@ FX.psystem = nil
 function FX:init()
 
 
-	local star = love.graphics.newImage('art/Effects/star1.png')
+	local star = love.graphics.newImage('art/Effects/whitePuff00.png')
  
-	self.psystem = love.graphics.newParticleSystem(star, 128) -- Max particles at a time
+	self.psystem = love.graphics.newParticleSystem(star, 100) -- Max particles at a time
 	self.psystem:setParticleLifetime(2, 5) -- Particles live at least 2s and at most 5s.
 	self.psystem:setEmissionRate(5)
-	self.psystem:setSizeVariation(1)
-	self.psystem:setLinearAcceleration(-20, -20, 20, 20) -- Random movement in all directions.
+	self.psystem:setSizeVariation(0.2)
+	self.psystem:setLinearAcceleration(-100, -100, 100, 100) -- Random movement in all directions.
 	self.psystem:setColors(255, 255, 255, 255, 255, 255, 255, 0) -- Fade to transparency.
 
 end
