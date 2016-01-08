@@ -1,6 +1,12 @@
 --[[ Game.lua by jose@josellausas.com ]]
+local camera 			= require("LLBase.LLCamera")
 local ObjectFactory 	= require("LLBase.ObjectFactory")
 local UIMan 			= require("LLBase.UIManager")
+
+
+-- Defaults fro the camera
+local cameraSpeed 	= 800
+local camScale 		= 2
 
 -- The game object
 local game = {
@@ -141,21 +147,62 @@ function game:init(settings)
 	self:loadLevel(userSettings.currentLevel)
 end
 
+local function getCameraDeltas(dt)
+
+	local moveAmount = dt * cameraSpeed
+
+	local deltaX = 0
+	local deltaY = 0
+
+	if love.keyboard.isDown("left") then
+		deltaX = -moveAmount
+	elseif love.keyboard.isDown("right")then
+		deltaX = moveAmount
+	end
+
+	if love.keyboard.isDown("up") then
+		deltaY = -moveAmount
+	elseif love.keyboard.isDown("down")then
+		deltaY = moveAmount
+	end
+
+	return deltaX, deltaY
+end
+
 function game:update(dt)
+	-- Refresh the things
 	UIMan:update(dt)
 	ObjectFactory:update(dt)
+
+	-- Refresh the thing that views the things
+	local camDx, camDy = getCameraDeltas(dt)
+	print(camDx .. " - " .. camDy)
+	camera:move(camDx, camDy)
 end 
 
 
 function game:draw()
-	-- Camera goes here
-
-	ObjectFactory:draw()
+	-- All a matter of perspective ;)
+	camera:set()
+		ObjectFactory:draw()
+	camera:unset()
 
 	-- This goes on top.
 	UIMan:draw()
 end
 
+
+
+
+function game:zoomOut()
+	camScale = camScale * 2
+	camera:setScale(camScale,camScale)
+end
+
+function game:zoomIn()
+	camScale = camScale / 2
+	camera:setScale(camScale,camScale)
+end
 
 return game
 

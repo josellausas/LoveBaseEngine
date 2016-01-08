@@ -7,14 +7,8 @@ Todos los derechos reservadas.
 
 ]]
 local lovebird 		= require("lovebird")
-local camera 		= require("LLBase.LLCamera")
 local gameSettings  = require("game_settings")
 local LlauGame 	    = require("Game")
-
--- Defaults fro the camera
-local cameraSpeed 	= 800
-local camScale 		= 2
-
 
 require("mobdebug").start()
 
@@ -37,58 +31,19 @@ function love.load()
 end
 
 
-local function getCameraDeltas(dt)
-
-	local moveAmount = dt * cameraSpeed
-
-	local deltaX = 0
-	local deltaY = 0
-
-	if love.keyboard.isDown("left") then
-		deltaX = -moveAmount
-	elseif love.keyboard.isDown("right")then
-		deltaX = moveAmount
-	end
-
-	if love.keyboard.isDown("up") then
-		deltaY = -moveAmount
-	elseif love.keyboard.isDown("down")then
-		deltaY = moveAmount
-	end
-
-	return deltaX, deltaY
-end
-
 	
 function love.update(dt)
-	
-	lovebird.update()
-	
 	LlauGame:update(dt)
-	
-	local camDx, camDy = getCameraDeltas(dt)
-	print(camDx .. " - " .. camDy)
-	camera:move(camDx, camDy)
-
+	lovebird.update()
 end
 
 function love.draw()
-	camera:set()
-	
 	LlauGame:draw()
-	
-	camera:unset()
 end
 
-function love.mousepressed(x,y,button)
-	print("mouse pressed")
-	print(button)
-	if button == 1 then
-		local relX, relY = camera:mousePosition(x,y)
-		
-		print(relX .. " - " ..relY)
 
-	end
+function love.mousepressed(x,y,button)
+	
 end
 
 function love.mousereleased(x,y,button)
@@ -105,18 +60,13 @@ function love.keypressed(key)
 end
 
 function love.keyreleased(key)
-
 	if key == 'z' then
-		camScale = camScale * 2
-		camera:setScale(camScale,camScale)
+		LlauGame:zoomOut()
 	end
 
 	if key == 'a' then
-		camScale = camScale / 2
-		camera:setScale(camScale,camScale)
+		LlauGame:zoomIn()
 	end
-	
-
 end
 
 function love.focus(f)
