@@ -1,5 +1,5 @@
 --[[ Game.lua by jose@josellausas.com ]]
-local camera 			= require("LLBase.LLCamera")
+local Camera 			= require("LLBase.LLCamera")
 local ObjectFactory 	= require("LLBase.ObjectFactory")
 local UIMan 			= require("LLBase.UIManager")
 local ColMan 			= require("LLBase.CollisionManager")
@@ -196,7 +196,7 @@ function game:update(dt)
 
 	-- Refresh the thing that views the things
 	local camDx, camDy = getCameraDeltas(dt)
-	camera:move(camDx, camDy)
+	Camera:move(camDx, camDy)
 
 	-- Update shiny stuff
 	EffectsMan:update(dt)
@@ -205,12 +205,12 @@ end
 
 function game:draw()
 	-- All a matter of perspective ;)
-	camera:set()
+	Camera:set()
 		-- Draw the objects
 		ObjectFactory:draw()
 		-- Draw the shiny shit on-top
 		EffectsMan:draw()
-	camera:unset()
+	Camera:unset()
 
 	-- This goes on top of anything else
 	UIMan:draw()
@@ -220,12 +220,12 @@ end
 
 function game:zoomOut()
 	camScale = camScale * 2
-	camera:setScale(camScale,camScale)
+	Camera:setScale(camScale,camScale)
 end
 
 function game:zoomIn()
 	camScale = camScale / 2
-	camera:setScale(camScale,camScale)
+	Camera:setScale(camScale,camScale)
 end
 
 return game
