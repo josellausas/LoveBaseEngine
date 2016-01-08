@@ -1,5 +1,4 @@
 -- Love Config file
-
 function love.conf(t)
 	
 	t.identity = "baseEngine_0"
@@ -14,6 +13,5 @@ function love.conf(t)
 	t.window.minHeight = 600
 	t.window.msaa = 0 -- Number of samples to use
 	t.window.display = 1 -- The index of the monitor to use
-
 end
 

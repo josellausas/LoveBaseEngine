@@ -8,8 +8,8 @@ Todos los derechos reservadas.
 ]]
 
 local ObjectFactory = require("ObjectFactory")
-
-local lovebird = require("lovebird")
+local lovebird 		= require("lovebird")
+local camera 		= require("LLCamera")
 
 require("mobdebug").start()
 
@@ -55,9 +55,11 @@ function love.update(dt)
 end
 
 function love.draw()
-	
+	camera:set()
+
 	ObjectFactory:draw()
 	
+	camera:unset()
 end
 
 function love.mousepressed(x,y,button)
