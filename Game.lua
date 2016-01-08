@@ -100,6 +100,8 @@ function game:createAI(radius, speedRange, posX, posY)
 	enemyAI.speed = math.random(speedRange)
 	table.insert(self.enemies, enemyAI)
 	ColMan:registerObject(enemyAI)
+
+	enemyAI:seek(self.player)
 end
 
 

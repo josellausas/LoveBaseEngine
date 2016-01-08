@@ -27,26 +27,7 @@ end
 
 --[[Looks at the target if he have one.]]
 local update_intelligence = function(self, dt)
-	-- Just looks at the objective for now
-	if (self.target == nil) then
-		-- Check for a wayPoint and set Target
-		
-	end
-
-	-- If we have a valid target, move towards it. otherwhise stop.
-	if not (self.target == nil) then
-		self:lookAt(self.target)
-
-		-- Un indicate the target if we are close enough
-		local distSq = self:distSqToTarget()
-		
-		if(distSq < 25) then
-			self.target = nil
-		end
-	else
-		self.speed = 0
-		self.heading = self.heading + dt
-	end
+	self.currentBehavior.onUpdate(self,dt)
 end
 
 
@@ -136,6 +117,39 @@ local MovingObject =
 	end
 }
 
+local noBehavior = {
+	onEnter = function(agent)
+		print("starting to chill")
+		agent.speed = 0
+	end,
+	onUpdate = function(agent, dt)
+		agent.heading = agent.heading + dt
+	end,
+	onExit = function(agent)
+		print("Exiting idle state")
+	end
+}
+
+
+local seekBehavior = {
+	onEnter = function(agent)
+		print("Agent is now seeking target at: ")
+
+	end,
+	onUpdate = function(agent, dt)
+		if not (agent.target == nil) then
+			agent:lookAt(agent.target)
+
+			if(agent:distSqToTarget() < 100) then
+				agent:chill()
+			end
+		end
+	end,
+	onExit = function(agent)
+		print("Agent is no longer seeking target")
+	end
+}
+
 --[[ A Moving object that seems to be intelligent ]]
 local IntelligentObject = 
 {
@@ -146,6 +160,26 @@ local IntelligentObject =
 		
 		-- Tracks a moving target
 		ai.target = target
+		ai.currentBehavior = noBehavior
+
+		ai.changeState = function(self, state)
+			local oldBehavior = self.currentBehavior.onExit(self)
+			state.onEnter(self)
+
+			-- Set this as the current behavir
+			self.currentBehavior = state
+		end
+
+		ai.chill = function(self)
+			self.target = nil
+			self:changeState(noBehavior)
+		end
+		
+
+		ai.seek = function(self, target)
+			self.target = target
+			self:changeState(seekBehavior)
+		end
 
 		-- Sets the heading towards the given coordinate
 		ai.lookAt = function(self, coord)
