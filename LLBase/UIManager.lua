@@ -4,9 +4,6 @@ local UI = {}
 
 function UI:init(settings)
 
-
-
-
 end
 
 function UI:update(dt)

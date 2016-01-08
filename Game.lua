@@ -2,6 +2,7 @@
 local camera 			= require("LLBase.LLCamera")
 local ObjectFactory 	= require("LLBase.ObjectFactory")
 local UIMan 			= require("LLBase.UIManager")
+local ColMan 			= require("LLBase.CollisionManager")
 
 
 -- Defaults fro the camera
@@ -65,9 +66,15 @@ function game:loadLevel(levelName)
 	print("Level settings loaded!")
 
 
+	print("Initializing Collisions")
+		-- We are using 10x10 grids for now.
+		ColMan:init(levelSettings.mapWidth, levelSettings.mapHeight, 10, 10)
+	print("Done creating collision map")
+
 
 	print("Creating Player")
 		self.player = ObjectFactory:new(self.loadedImages["player"], 200, 200)
+		ColMan:registerObject(self.player)
 	print("Done creating Player")
 
 
@@ -91,6 +98,7 @@ function game:createAI(radius, speedRange, posX, posY)
 	local enemyAI = ObjectFactory:newAI(self.loadedImages["ship"], posX, posY, nil)
 	enemyAI.speed = math.random(speedRange)
 	table.insert(self.enemies, enemyAI)
+	ColMan:registerObject(enemyAI)
 end
 
 
@@ -170,8 +178,12 @@ local function getCameraDeltas(dt)
 end
 
 function game:update(dt)
+
+	ColMan:update(dt, self.player)
+
 	-- Refresh the things
 	UIMan:update(dt)
+	
 	ObjectFactory:update(dt)
 
 	-- Refresh the thing that views the things
