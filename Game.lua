@@ -176,7 +176,6 @@ function game:update(dt)
 
 	-- Refresh the thing that views the things
 	local camDx, camDy = getCameraDeltas(dt)
-	print(camDx .. " - " .. camDy)
 	camera:move(camDx, camDy)
 end 
 

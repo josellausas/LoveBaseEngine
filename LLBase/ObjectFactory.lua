@@ -30,7 +30,7 @@ local update_intelligence = function(self, dt)
 	-- Just looks at the objective for now
 	if (self.target == nil) then
 		-- Check for a wayPoint and set Target
-		print("At target!")
+		
 	end
 
 	-- If we have a valid target, move towards it. otherwhise stop.
