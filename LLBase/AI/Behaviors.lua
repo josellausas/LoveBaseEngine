@@ -1,5 +1,4 @@
-
-
+--[[Behavior state machines]]
 local noBehavior = {
 	onEnter = function(agent)
 		print("starting to chill")
@@ -32,6 +31,24 @@ local seekBehavior = {
 		print("Agent is no longer seeking target")
 	end
 }
+
+local wanderBehavior = {
+	onEnter = function(agent)
+	end,
+	onUpdate = function(agent, dt)
+		if not (agent.target == nil) then
+			agent:lookAt(agent.target)
+
+			if(agent:distSqToTarget() < 100) then
+				agent:chill()
+			end
+		end
+	end,
+	onExit = function(agent)
+		print("Agent is no longer seeking target")
+	end
+}
+
 
 local pack = {
 	noBehavior = noBehavior,
