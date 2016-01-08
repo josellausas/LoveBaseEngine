@@ -3,6 +3,7 @@ local camera 			= require("LLBase.LLCamera")
 local ObjectFactory 	= require("LLBase.ObjectFactory")
 local UIMan 			= require("LLBase.UIManager")
 local ColMan 			= require("LLBase.CollisionManager")
+local EffectsMan		= require("LLBase.EffectsMan")
 
 
 -- Defaults fro the camera
@@ -117,6 +118,11 @@ function game:init(settings)
 	-- Start to launch the game
 	print("Launching " .. settings.gameTitle .. "...")
 
+	-- Starts the Shiny stuff
+	print("Initializing Particles...")
+		EffectsMan:init({hola="Hola"})
+	print("Done with particle setup.")
+
 	-- Start UI
 	print("Starting UI...")
 		UIMan:init({hola="hola"})
@@ -183,26 +189,31 @@ function game:update(dt)
 
 	-- Refresh the things
 	UIMan:update(dt)
-	
+
 	ObjectFactory:update(dt)
 
 	-- Refresh the thing that views the things
 	local camDx, camDy = getCameraDeltas(dt)
 	camera:move(camDx, camDy)
+
+	-- Update shiny stuff
+	EffectsMan:update(dt)
 end 
 
 
 function game:draw()
 	-- All a matter of perspective ;)
 	camera:set()
+		-- Draw the objects
 		ObjectFactory:draw()
+		-- Draw the shiny shit on-top
+		EffectsMan:draw()
 	camera:unset()
 
-	-- This goes on top.
+	-- This goes on top of anything else
 	UIMan:draw()
+
 end
-
-
 
 
 function game:zoomOut()

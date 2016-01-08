@@ -25,7 +25,7 @@ end
 
 function love.load()
 	love.graphics.setNewFont(12)
-	love.graphics.setBackgroundColor(255,255,255)
+	love.graphics.setBackgroundColor(0,0,0)
 
 	LlauGame:init(gameSettings)
 end
