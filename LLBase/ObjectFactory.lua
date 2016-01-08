@@ -1,5 +1,7 @@
 --[[ ObjectFactory.lua ]]
 
+local AIBehaviors = require("LLBase.AIBehaviors")
+
 -- Offsets the rotation so it looks good.
 local rotate90 = math.rad(90)
 
@@ -117,38 +119,9 @@ local MovingObject =
 	end
 }
 
-local noBehavior = {
-	onEnter = function(agent)
-		print("starting to chill")
-		agent.speed = 0
-	end,
-	onUpdate = function(agent, dt)
-		agent.heading = agent.heading + dt
-	end,
-	onExit = function(agent)
-		print("Exiting idle state")
-	end
-}
 
 
-local seekBehavior = {
-	onEnter = function(agent)
-		print("Agent is now seeking target at: ")
 
-	end,
-	onUpdate = function(agent, dt)
-		if not (agent.target == nil) then
-			agent:lookAt(agent.target)
-
-			if(agent:distSqToTarget() < 100) then
-				agent:chill()
-			end
-		end
-	end,
-	onExit = function(agent)
-		print("Agent is no longer seeking target")
-	end
-}
 
 --[[ A Moving object that seems to be intelligent ]]
 local IntelligentObject = 
@@ -160,7 +133,7 @@ local IntelligentObject =
 		
 		-- Tracks a moving target
 		ai.target = target
-		ai.currentBehavior = noBehavior
+		ai.currentBehavior = AIBehaviors.noBehavior
 
 		ai.changeState = function(self, state)
 			local oldBehavior = self.currentBehavior.onExit(self)
@@ -172,13 +145,13 @@ local IntelligentObject =
 
 		ai.chill = function(self)
 			self.target = nil
-			self:changeState(noBehavior)
+			self:changeState(AIBehaviors.noBehavior)
 		end
 		
 
 		ai.seek = function(self, target)
 			self.target = target
-			self:changeState(seekBehavior)
+			self:changeState(AIBehaviors.seekBehavior)
 		end
 
 		-- Sets the heading towards the given coordinate
