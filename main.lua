@@ -12,6 +12,8 @@ local lovebird 		= require("lovebird")
 local camera 		= require("LLCamera")
 
 local cameraSpeed = 800
+local camScale = 2
+
 
 require("mobdebug").start()
 
@@ -24,8 +26,6 @@ local ai_02 	= nil
 local ai_03 	= nil
 local ai_04 	= nil
 local ai_05 	= nil
-
-camera.x = 100
 
 -- Window width
 local function getWidth()
@@ -123,10 +123,10 @@ end
 function love.keypressed(key)
 	if key == 'b' then
 		-- Makes them moove at diferent speeds
-		ai_01.speed = 12
-		ai_02.speed = 20
-		ai_03.speed = 50
-		ai_04.speed = 70
+		ai_01.speed = 60
+		ai_02.speed = 500
+		ai_03.speed = 300
+		ai_04.speed = 200
 		ai_05.speed = 120
 	end
 
@@ -135,7 +135,15 @@ end
 
 function love.keyreleased(key)
 
-	print("Key Released")
+	if key == 'z' then
+		camScale = camScale * 2
+		camera:setScale(camScale,camScale)
+	end
+
+	if key == 'a' then
+		camScale = camScale / 2
+		camera:setScale(camScale,camScale)
+	end
 	
 
 end
