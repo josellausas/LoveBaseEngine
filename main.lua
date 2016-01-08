@@ -9,6 +9,8 @@ Todos los derechos reservadas.
 
 local ObjectFactory = require("ObjectFactory")
 
+local lovebird = require("lovebird")
+
 
 local blueTile 	= nil
 local redTile  	= nil
@@ -40,6 +42,8 @@ function love.load()
 end
 
 function love.update(dt)
+	lovebird.update()
+
 	if love.keyboard.isDown("up") then
 		
 	end
