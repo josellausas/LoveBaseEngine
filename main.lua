@@ -11,6 +11,8 @@ local ObjectFactory = require("ObjectFactory")
 local lovebird 		= require("lovebird")
 local camera 		= require("LLCamera")
 
+local cameraSpeed = 800
+
 require("mobdebug").start()
 
 
@@ -23,8 +25,22 @@ local ai_03 	= nil
 local ai_04 	= nil
 local ai_05 	= nil
 
+camera.x = 100
+
+-- Window width
+local function getWidth()
+	return love.graphics.getWidth()
+end
+
+-- Window height
+local function getHeight()
+	return love.graphics.getHeight()
+end
+
 
 function love.load()
+
+
 	love.graphics.setNewFont(12)
 	love.graphics.setBackgroundColor(255,255,255)
 
@@ -43,22 +59,46 @@ function love.load()
 
 end
 
-function love.update(dt)
-	lovebird.update()
 
-	if love.keyboard.isDown("up") then
-		
+local function getCameraDeltas(dt)
+
+	local moveAmount = dt * cameraSpeed
+
+	local deltaX = 0
+	local deltaY = 0
+
+	if love.keyboard.isDown("left") then
+		deltaX = -moveAmount
+	elseif love.keyboard.isDown("right")then
+		deltaX = moveAmount
 	end
 
+	if love.keyboard.isDown("up") then
+		deltaY = -moveAmount
+	elseif love.keyboard.isDown("down")then
+		deltaY = moveAmount
+	end
+
+	return deltaX, deltaY
+end
+
+	
+function love.update(dt)
+	
+	lovebird.update()
+	-- Update the world
 	ObjectFactory:update(dt)
+	
+
+	local camDx, camDy = getCameraDeltas(dt)
+	print(camDx .. " - " .. camDy)
+	camera:move(camDx, camDy)
 
 end
 
 function love.draw()
 	camera:set()
-
 	ObjectFactory:draw()
-	
 	camera:unset()
 end
 
@@ -66,8 +106,9 @@ function love.mousepressed(x,y,button)
 	print("mouse pressed")
 	print(button)
 	if button == 1 then
-		target.x = x
-		target.y = y
+		local relX, relY = camera:mousePosition(x,y)
+		target.x = relX
+		target.y = relY
 	end
 end
 
@@ -76,6 +117,8 @@ function love.mousereleased(x,y,button)
 		-- Do something
 	end
 end
+
+
 
 function love.keypressed(key)
 	if key == 'b' then
@@ -86,10 +129,14 @@ function love.keypressed(key)
 		ai_04.speed = 70
 		ai_05.speed = 120
 	end
+
+	
 end
 
 function love.keyreleased(key)
-	-- The key was released
+
+	print("Key Released")
+	
 
 end
 
@@ -98,6 +145,7 @@ function love.focus(f)
 		print("Lost focus")
 	else
 		print("Gained focus")
+		print("Window dimensions = { " .. getWidth() .. " , " .. getHeight() .. " } ")
 	end
 end
 

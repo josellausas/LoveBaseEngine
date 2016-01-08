@@ -3,8 +3,8 @@
 c = {
 	x = 0,
 	y = 0,
-	scaleX = 1,
-	scaleY = 1,
+	scaleX = 2,
+	scaleY = 2,
 	rotation = 0
 }
 
@@ -21,8 +21,8 @@ function c:unset()
 end
 
 function c:move(dx, dy)
-	self.x = self.x + (dx or 0)
-	self.y = self.y + (dy or 0)
+	self.x = self.x + dx
+	self.y = self.y + dy
 end
 
 function c:rotate(dr)
@@ -46,8 +46,8 @@ function c:setScale(sx, sy)
 end
 
 
-function c:mousePosition()
-	return love.mouse.getX() + self.scaleX + self.x, love.mouse.getY() * self.scaleY + self.y
+function c:mousePosition(x,y)
+	return x * self.scaleX + self.x , y * self.scaleY + self.y
 end
 
 return c
