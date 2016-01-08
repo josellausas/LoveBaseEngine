@@ -11,6 +11,8 @@ local ObjectFactory = require("ObjectFactory")
 
 local lovebird = require("lovebird")
 
+require("mobdebug").start()
+
 
 local blueTile 	= nil
 local redTile  	= nil
