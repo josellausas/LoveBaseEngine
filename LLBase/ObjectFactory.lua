@@ -1,51 +1,8 @@
 --[[ ObjectFactory.lua ]]
 
 local AIBehaviors = require("LLBase.AIBehaviors")
-
--- Offsets the rotation so it looks good.
-local rotate90 = math.rad(90)
-
-
---[[ Updates the lifetime of an object ]]
-local update_lifeTime = function(self, dt)
-	self.lifeTime = self.lifeTime + dt
-end
-
-
-
---[[Moves the object in the direction it is facing]]
-local update_movement = function(self, dt)
-	-- Move towards the forwards vector at the given speed.
-	local fwdVector = {
-		x = math.cos(self.heading),
-		y = math.sin(self.heading)
-	}
-	-- Update the position with deltas. Remember the physics from shcool?
-	self.x = self.x + (fwdVector.x * self.speed * dt)
-	self.y = self.y + (fwdVector.y * self.speed * dt)
-end
-
-
-
---[[Looks at the target if he have one.]]
-local update_intelligence = function(self, dt)
-	self.currentBehavior.onUpdate(self,dt)
-end
-
-
-
---[[Draws static things, no scale, no offsets, etc.]]
-local draw_basic = function(self)
-	love.graphics.draw(self.image, self.x, self.y)
-end
-
-
-
---[[ Draws the thing in the center, scaled and rotated in the correct direction ]]
-local draw_advanced = function(self)
-	love.graphics.draw(self.image, self.x, self.y, self.heading + rotate90, self.scale.x, self.scale.y, self.spec.offX, self.spec.offY)
-end
-
+local UpdateFuncs = require("LLBase.LLUpdateFuncs")
+local RenderFuncs = require("LLBase.LLRenderFuncs")
 
 
 --[[  RenderObject
@@ -65,8 +22,8 @@ local RenderObject =
 			y = 100,				-- Y position
 			lifeTime = 0,			-- # of seconds it's been alive
 			image 	= renderImage,	-- The image rendered
-			draw 	= draw_basic,	-- The drawFunc
-			update 	= update_func,	-- The updateFunc
+			draw 	= RenderFuncs.basic,	-- The drawFunc
+			update 	= UpdateFuncs.lifetime,	-- The updateFunc
 		}
 		return renderObjInstance
 	end,	
@@ -106,13 +63,13 @@ local MovingObject =
 
 		-- Polymorphysm :)
 		inst.update = function(self, dt)
-			update_lifeTime(self, dt)
-			update_movement(self, dt)
+			UpdateFuncs.lifeTime(self, dt)
+			UpdateFuncs.movement(self, dt)
 		end
 
 		-- Completely overrides parent's implementation
 		inst.draw = function(self)
-			draw_advanced(self)
+			RenderFuncs.advanced(self)
 		end
 
 		return inst
@@ -184,9 +141,9 @@ local IntelligentObject =
 
 		-- Polymorphism
 		ai.update = function(self, dt)
-			update_lifeTime(self, dt)
-			update_movement(self, dt)
-			update_intelligence(self, dt)
+			UpdateFuncs.lifeTime(self, dt)
+			UpdateFuncs.movement(self, dt)
+			UpdateFuncs.intelligence(self, dt)
 		end
 
 		ai.distSqToTarget = function(self)
