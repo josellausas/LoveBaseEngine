@@ -10,9 +10,12 @@ Todos los derechos reservadas.
 local ObjectFactory = require("ObjectFactory")
 local lovebird 		= require("lovebird")
 local camera 		= require("LLCamera")
+local gameSettings  = require("game_settings")
+local LlauGame 	    = require("Game")
 
-local cameraSpeed = 800
-local camScale = 2
+-- Defaults fro the camera
+local cameraSpeed 	= 800
+local camScale 		= 2
 
 
 require("mobdebug").start()
@@ -44,18 +47,10 @@ function love.load()
 	love.graphics.setNewFont(12)
 	love.graphics.setBackgroundColor(255,255,255)
 
-	-- Load the images here
-	blueTile   = love.graphics.newImage("art/tileBlue_04.png")
-	redTile    = love.graphics.newImage("art/tileRed_04.png")
-	playerShip = love.graphics.newImage("art/playerShip3_blue.png")
+	LlauGame:init(gameSettings)
 
-	target = ObjectFactory:new(redTile, 200, 200)
-
-	ai_01 = ObjectFactory:newAI(playerShip, 100, 500, target)
-	ai_02 = ObjectFactory:newAI(playerShip, 200, 500, target)
-	ai_03 = ObjectFactory:newAI(playerShip, 300, 500, target)
-	ai_04 = ObjectFactory:newAI(playerShip, 400, 500, target)
-	ai_05 = ObjectFactory:newAI(playerShip, 500, 500, target)
+	
+	
 
 end
 
@@ -86,10 +81,9 @@ end
 function love.update(dt)
 	
 	lovebird.update()
-	-- Update the world
-	ObjectFactory:update(dt)
 	
-
+	LlauGame:update(dt)
+	
 	local camDx, camDy = getCameraDeltas(dt)
 	print(camDx .. " - " .. camDy)
 	camera:move(camDx, camDy)
@@ -98,7 +92,9 @@ end
 
 function love.draw()
 	camera:set()
-	ObjectFactory:draw()
+	
+	LlauGame:draw()
+	
 	camera:unset()
 end
 
@@ -107,8 +103,9 @@ function love.mousepressed(x,y,button)
 	print(button)
 	if button == 1 then
 		local relX, relY = camera:mousePosition(x,y)
-		target.x = relX
-		target.y = relY
+		
+		print(relX .. " - " ..relY)
+
 	end
 end
 
@@ -121,15 +118,7 @@ end
 
 
 function love.keypressed(key)
-	if key == 'b' then
-		-- Makes them moove at diferent speeds
-		ai_01.speed = 60
-		ai_02.speed = 500
-		ai_03.speed = 300
-		ai_04.speed = 200
-		ai_05.speed = 120
-	end
-
+	
 	
 end
 
