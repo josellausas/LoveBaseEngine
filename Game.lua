@@ -11,17 +11,17 @@ local cameraSpeed 	= 800
 local camScale 		= Camera.scaleX
 
 -- The game object
-local game = {
-	player = nil,
-	team = {},
-	enemies = {},
-	currentLevelSettings = nil,
-	loadedImages = {
-		playerTile = nil,
-		ship = nil,
-	},
-	showUI = true,
+local game = {}
+game.showUI 	= true
+game.player 	= nil
+game.team 		= {}
+game.enemies 	= {}
+game.currentLevelSettings = nil
+game.loadedImages = {
+	playerTile = nil,
+	ship = nil,
 }
+	
 
 
 -- Window width
