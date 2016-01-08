@@ -2,6 +2,7 @@
 
 local level01 = {
 	name = "Base level 01",
+	levelType = "LEVEL",
 	numAI = 5,
 	targetRadius = 200,
 	speedRage = {min=100, max=500},

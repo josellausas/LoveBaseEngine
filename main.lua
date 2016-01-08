@@ -6,10 +6,8 @@ by jose@josellausas.com
 Todos los derechos reservadas.
 
 ]]
-
-local ObjectFactory = require("ObjectFactory")
 local lovebird 		= require("lovebird")
-local camera 		= require("LLCamera")
+local camera 		= require("LLBase.LLCamera")
 local gameSettings  = require("game_settings")
 local LlauGame 	    = require("Game")
 
@@ -19,16 +17,6 @@ local camScale 		= 2
 
 
 require("mobdebug").start()
-
-
-local blueTile 	= nil
-local redTile  	= nil
-local target 	= nil
-local ai_01 	= nil
-local ai_02 	= nil
-local ai_03 	= nil
-local ai_04 	= nil
-local ai_05 	= nil
 
 -- Window width
 local function getWidth()
@@ -42,16 +30,10 @@ end
 
 
 function love.load()
-
-
 	love.graphics.setNewFont(12)
 	love.graphics.setBackgroundColor(255,255,255)
 
 	LlauGame:init(gameSettings)
-
-	
-	
-
 end
 
 

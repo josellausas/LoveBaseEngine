@@ -1,18 +1,18 @@
 --[[ Game.lua by jose@josellausas.com ]]
-
-
-local ObjectFactory = require("ObjectFactory")
+local ObjectFactory 	= require("LLBase.ObjectFactory")
+local UIMan 			= require("LLBase.UIManager")
 
 -- The game object
 local game = {
-	currentLevelSettings = nil,
-	levelNames = {},
 	player = nil,
+	team = {},
+	enemies = {},
+	currentLevelSettings = nil,
 	loadedImages = {
 		playerTile = nil,
 		ship = nil,
 	},
-	enemies = {},
+	showUI = true,
 }
 
 
@@ -26,9 +26,7 @@ local function getHeight()
 	return love.graphics.getHeight()
 end
 
-
-
-
+--[[ Loads an image to the loaded images dictionary ]]
 function game:loadImage(name, path)
 
 	if not (self.loadedImages[name] == nil) then
@@ -38,9 +36,13 @@ function game:loadImage(name, path)
 	self.loadedImages[name] = love.graphics.newImage(path)
 end
 
+
+--[[ Loads a gameLevel]]
 function game:loadLevel(levelName)
 
 	math.randomseed(os.time())
+
+
 	print("Loading images")
 		-- Load the images here
 		-- TODO: get these from the settings
@@ -75,6 +77,7 @@ function game:loadLevel(levelName)
 			self:createAI(radius, speedRange, posX, posY)
 		end
 	print("Done creating AI")
+
 end
 
 function game:createAI(radius, speedRange, posX, posY)
@@ -90,20 +93,27 @@ local function loadUserSettings()
 	return {currentLevel = "level01"}
 end
 
-
-
-
 function game:init(settings)
 	-- Fail if we have nil settings 
 	if settings == nil then print("Failed to load settings") return nil end;
 
+	-- Start the necesary shit for the ui Manager
+	
+
 	-- Start to launch the game
 	print("Launching " .. settings.gameTitle .. "...")
+
+	-- Start UI
+	print("Starting UI...")
+		UIMan:init({hola="hola"})
+	print("Done with UI.")
+
+
 
 	-- Load the levelNames
 	local levelNames = settings.levels
 
-	print("Attempting to load "..#levelNames.." levels")
+	print("Attempting to load "..#levelNames.." levels...")
 
 
 	
@@ -132,12 +142,18 @@ function game:init(settings)
 end
 
 function game:update(dt)
+	UIMan:update(dt)
 	ObjectFactory:update(dt)
 end 
 
 
 function game:draw()
+	-- Camera goes here
+
 	ObjectFactory:draw()
+
+	-- This goes on top.
+	UIMan:draw()
 end
 
 
