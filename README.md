@@ -4,7 +4,7 @@ Love2D BaseEngine
 About
 -----
 An easy-to-use wrapper for Love2D. This is intended for begginers and people
-that want to start learnign how to program and make games. It looks to simplify
+that want to start learning how to program and make games. It seeks to simplify
 the process of creating a game by abstracting the "complicated" stuff.
 
 Getting started: Work in progess

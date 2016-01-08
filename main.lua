@@ -67,6 +67,10 @@ function love.keyreleased(key)
 	if key == 'a' then
 		LlauGame:zoomIn()
 	end
+
+	if key=='space' then
+		LlauGame:centerCamPlayer()
+	end
 end
 
 function love.focus(f)

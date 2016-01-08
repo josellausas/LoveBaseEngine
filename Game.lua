@@ -8,7 +8,7 @@ local EffectsMan		= require("LLBase.EffectsMan")
 
 -- Defaults fro the camera
 local cameraSpeed 	= 800
-local camScale 		= 2
+local camScale 		= Camera.scaleX
 
 -- The game object
 local game = {
@@ -74,25 +74,35 @@ function game:loadLevel(levelName)
 
 
 	print("Creating Player")
-		self.player = ObjectFactory:new(self.loadedImages["player"], 200, 200)
+		self.player = ObjectFactory:new(self.loadedImages["player"], math.random(1, levelSettings.mapWidth), math.random(1, levelSettings.mapHeight))
 		ColMan:registerObject(self.player)
 	print("Done creating Player")
 
-
-	
 	print("Creating AI")
 		local radius 		= levelSettings.targetRadius
 		local speedRange 	= levelSettings.targetRadius
 
 		for i=1,levelSettings.numAI do
-			local posX = math.random(0, levelSettings.mapWidth)
-			local posY = math.random(0, levelSettings.mapHeight)
+			local posX = math.random(1, levelSettings.mapWidth)
+			local posY = math.random(1, levelSettings.mapHeight)
 
 			self:createAI(radius, speedRange, posX, posY)
 		end
 	print("Done creating AI")
 
+	self:centerCamera({x=levelSettings.mapHeight*0.5,y=levelSettings.mapWidth*0.5})
 end
+
+
+function game:centerCamera(target)
+	Camera:setPosition(target.x - (getWidth() * 0.5 * camScale), target.y - (getHeight() * 0.5 * camScale) )
+end
+
+function game:centerCamPlayer()
+	self:centerCamera(self.player)
+end
+
+
 
 function game:createAI(radius, speedRange, posX, posY)
 	-- Use the object factory
@@ -199,7 +209,7 @@ function game:update(dt)
 	Camera:move(camDx, camDy)
 
 	-- Update shiny stuff
-	EffectsMan:update(dt)
+	-- EffectsMan:update(dt)
 end 
 
 
@@ -209,7 +219,7 @@ function game:draw()
 		-- Draw the objects
 		ObjectFactory:draw()
 		-- Draw the shiny shit on-top
-		EffectsMan:draw()
+		-- EffectsMan:draw()
 	Camera:unset()
 
 	-- This goes on top of anything else
@@ -219,13 +229,15 @@ end
 
 
 function game:zoomOut()
-	camScale = camScale * 2
+	Camera:move(-getWidth()*0.5, -getHeight()*0.5)
+	camScale = camScale + 1
 	Camera:setScale(camScale,camScale)
 end
 
 function game:zoomIn()
-	camScale = camScale / 2
+	camScale = camScale - 1
 	Camera:setScale(camScale,camScale)
+	Camera:move(getWidth()*0.5, getHeight()*0.5)
 end
 
 return game

@@ -3,8 +3,8 @@
 c = {
 	x = 0,
 	y = 0,
-	scaleX = 2,
-	scaleY = 2,
+	scaleX = 4,
+	scaleY = 4,
 	rotation = 0
 }
 
