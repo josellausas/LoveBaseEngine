@@ -1,16 +1,31 @@
---[[ Game.lua by jose@josellausas.com ]]
-local Camera 			= require("LLBase.LLCamera")
-local ObjectFactory 	= require("LLBase.ObjectFactory")
-local UIMan 			= require("LLBase.UIManager")
-local ColMan 			= require("LLBase.CollisionManager")
-local EffectsMan		= require("LLBase.EffectsMan")
+--[[ Game.lua by jose@josellausas.com 
+
+Main Game
+=========
+
+EN
+--
+Main game file. Manage gameplay and user interaction here.
 
 
--- Defaults fro the camera
+ES
+--
+Archivo principal desde el cual se controlan las 
+reglas del juego y la interacción con el usuario.
+
+]]
+local Camera 			= require("LLBase.LLCamera")			-- La camara del juagador
+local ObjectFactory 	= require("LLBase.ObjectFactory")		-- La fabrica de objetos 
+local UIMan 			= require("LLBase.UIManager")			-- El encargado de los menús (en desarrollo)
+local ColMan 			= require("LLBase.CollisionManager")	-- El encargado de las colisiones (en desarrollo)
+local EffectsMan		= require("LLBase.EffectsMan")			-- El encargado de los efectos (en desarrollo)
+
+
+-- Setup the camera defaults
 local cameraSpeed 	= 800
 local camScale 		= Camera.scaleX
 
--- The game object
+-- Build the Game object
 local game = {}
 game.showUI 	= true
 game.player 	= nil
@@ -22,8 +37,6 @@ game.loadedImages = {
 	ship = nil,
 }
 	
-
-
 -- Window width
 local function getWidth()
 	return love.graphics.getWidth()
@@ -38,7 +51,7 @@ end
 function game:loadImage(name, path)
 
 	if not (self.loadedImages[name] == nil) then
-		print("RELOADING AN IMAGE!!!")
+		print("WARNING: RELOADING AN IMAGE!!!")
 	end
 	
 	self.loadedImages[name] = love.graphics.newImage(path)
@@ -48,9 +61,11 @@ end
 --[[ Loads a gameLevel]]
 function game:loadLevel(levelName)
 
+	-- This is good to do when you need randomness
+	-- Seed the value with a number to always get the same randomness (for testing, and such...)
 	math.randomseed(os.time())
 
-
+	-- UNO
 	print("Loading images")
 		-- Load the images here
 		-- TODO: get these from the settings
@@ -59,7 +74,7 @@ function game:loadLevel(levelName)
 	print("Done loading images")
 
 
-
+	-- DOS
 	print("Starting level " .. levelName)
 		-- Load level settings from file
 		local levelSettings = require("levels."..levelName)
@@ -67,17 +82,20 @@ function game:loadLevel(levelName)
 	print("Level settings loaded!")
 
 
+	-- TRES
 	print("Initializing Collisions")
 		-- We are using 10x10 grids for now.
 		ColMan:init(levelSettings.mapWidth, levelSettings.mapHeight, 10, 10)
 	print("Done creating collision map")
 
 
+	-- CUATRO
 	print("Creating Player")
 		self.player = ObjectFactory:new(self.loadedImages["player"], math.random(1, levelSettings.mapWidth), math.random(1, levelSettings.mapHeight))
 		ColMan:registerObject(self.player)
 	print("Done creating Player")
 
+	-- CINCO
 	print("Creating AI")
 		local radius 		= levelSettings.targetRadius
 		local speedRange 	= levelSettings.targetRadius
@@ -90,7 +108,10 @@ function game:loadLevel(levelName)
 		end
 	print("Done creating AI")
 
+	-- MAAAAAAAAMBO!
 	self:centerCamera({x=levelSettings.mapHeight*0.5,y=levelSettings.mapWidth*0.5})
+
+	-- MORE MUSIC HERE ->
 end
 
 
@@ -108,9 +129,14 @@ function game:createAI(radius, speedRange, posX, posY)
 	-- Use the object factory
 	local enemyAI = ObjectFactory:newAI(self.loadedImages["ship"], posX, posY, nil)
 	enemyAI.speed = math.random(speedRange)
+
+	-- Add it to the enemy list
 	table.insert(self.enemies, enemyAI)
+
+	-- Register it for collision detection
 	ColMan:registerObject(enemyAI)
 
+	-- Tell it to seek out the player
 	enemyAI:seek(self.player)
 end
 
@@ -123,9 +149,6 @@ end
 function game:init(settings)
 	-- Fail if we have nil settings 
 	if settings == nil then print("Failed to load settings") return nil end;
-
-	-- Start the necesary shit for the ui Manager
-	
 
 	-- Start to launch the game
 	print("Launching " .. settings.gameTitle .. "...")
@@ -140,15 +163,13 @@ function game:init(settings)
 		UIMan:init({hola="hola"})
 	print("Done with UI.")
 
-
-
 	-- Load the levelNames
 	local levelNames = settings.levels
-
 	print("Attempting to load "..#levelNames.." levels...")
 
-
-	
+	--[[
+		Loads the files in the levels/ directory and parses them
+	]]
 	local successCount = 0
 	for i,filename in ipairs(levelNames) do
 		-- Load level file
@@ -161,40 +182,42 @@ function game:init(settings)
 		end
 	end
 
+	-- We could stop showing the loading screen here...
 	print("Finished loading "..successCount.." levels")
 
-	print("Loading user settings ...")
 	-- Load the user settings
+	print("Loading user settings ...")
 	local userSettings = loadUserSettings()
-
 	print("Finished loading user settings ...")
 
 	-- Get the users current level
 	self:loadLevel(userSettings.currentLevel)
 end
 
+--[[
+	Updates the Camera
+]]
 local function getCameraDeltas(dt)
-
 	local moveAmount = dt * cameraSpeed
-
 	local deltaX = 0
 	local deltaY = 0
-
 	if love.keyboard.isDown("left") then
 		deltaX = -moveAmount
 	elseif love.keyboard.isDown("right")then
 		deltaX = moveAmount
 	end
-
 	if love.keyboard.isDown("up") then
 		deltaY = -moveAmount
 	elseif love.keyboard.isDown("down")then
 		deltaY = moveAmount
 	end
-
 	return deltaX, deltaY
 end
 
+
+--[[
+	Updates the Game
+]]
 function game:update(dt)
 
 	ColMan:update(dt, self.player)
@@ -212,7 +235,9 @@ function game:update(dt)
 	-- EffectsMan:update(dt)
 end 
 
-
+--[[
+	Draws the Game
+]]
 function game:draw()
 	-- All a matter of perspective ;)
 	Camera:set()
