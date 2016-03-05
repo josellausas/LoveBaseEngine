@@ -35,5 +35,17 @@ Directory Structure
         * Effects/
         * Tools/
     + main.lua
+
+Wish-list
+------------
+
++ Project Wizard
+    * CLI
+    * UI
++ Unit testing
++ Level Editor
++ Particle Editor
++ Executable Packager
+
     
 

@@ -1,0 +1,5 @@
+#!/usr/bin/env lua
+
+print("Running", _VERSION)
+print("Options", ...)
+

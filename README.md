@@ -1,6 +1,8 @@
 Love2D BaseEngine
 =================
 
+*This has only been tested on MacOSX*
+
 About
 -----
 An easy-to-use wrapper for Love2D. This is intended for begginers and people
