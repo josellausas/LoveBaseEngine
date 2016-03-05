@@ -27,7 +27,7 @@ local MovingObject =
 		-- Our forwards.
 		inst.heading = 0 -- In Radians
 		
-
+		-- Sets the heading to a certain xy 
 		inst.setHeading = function(self, x, y)
 			-- Converts a foward vector to radians. The vector mush be normalized!!!
 			self.heading = math.atan2(y, x)
@@ -35,7 +35,9 @@ local MovingObject =
 
 		-- Polymorphysm :)
 		inst.update = function(self, dt)
+			-- Is alive
 			UpdateFuncs.lifeTime(self, dt)
+			-- Has movement
 			UpdateFuncs.movement(self, dt)
 		end
 

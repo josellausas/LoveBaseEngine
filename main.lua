@@ -12,6 +12,8 @@ local LlauGame 	    = require("Game")
 
 require("mobdebug").start()
 
+local busted = require("busted")
+
 -- Window width
 local function getWidth()
 	return love.graphics.getWidth()
@@ -26,12 +28,9 @@ end
 function love.load()
 	love.graphics.setNewFont(12)
 	love.graphics.setBackgroundColor(120,120,120)
-
 	LlauGame:init(gameSettings)
 end
 
-
-	
 function love.update(dt)
 	LlauGame:update(dt)
 	lovebird.update()
@@ -52,11 +51,7 @@ function love.mousereleased(x,y,button)
 	end
 end
 
-
-
 function love.keypressed(key)
-	
-	
 end
 
 function love.keyreleased(key)
