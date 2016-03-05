@@ -1,5 +1,104 @@
 #!/usr/bin/env lua
-
 print("Running", _VERSION)
 print("Options", ...)
+print("")
+
+--[[ The objects that we are using in this file]]
+local cli = {}      -- The CLI object
+local clr = nil     -- The color printer
+local ll  = nil     -- The log function
+local argparse = nil -- Argument parser
+
+--[[ Init the CLI machine ]]
+local function init()
+  -- Init the colors
+  print("Starting colors")
+  clr = require 'trepl.colorize'
+
+  -- Crete the printing function
+  ll = function(message)
+      print(clr.green("-> ") .. clr.red("[") .. clr.Blue("LL") .. clr.red("]") .. "{ ".. message .. " }")
+  end
+
+  -- Attach the thing
+  cli.ll = ll
+
+  -- Test the printing:
+  ll("Done loading colors")
+  print("")
+
+  ll("Loading arguments parser")
+  argparse = require "argparse"
+  ll("Done loading argument parser")
+  print("")
+end
+
+local function printHeader()
+  print("")
+  print(clr.green("-----------------------------------------"))
+  print(clr.red("\t=== ") .. clr.Blue("LlauBase Lua CLI") .. clr.red(" ===")) -- The title
+  print(clr.green("-----------------------------------------"))
+  print("")
+end
+
+local function printTitle(title)
+  print("")
+  print(clr.red("----------------- ") .. clr.Blue(title) .. clr.red(" ----------------- "))
+end
+
+local function runTests()
+  ll("Running tests ...")
+  local busted = require("busted")
+  ll("Done with tests ...")
+  print("")
+
+  return true
+end 
+
+local function loadModules()
+  ll("Loading modules")
+  ll("Done loading modules")
+  print("")
+end
+
+local function printChoice(key, description)
+  print("\t[ " .. clr.red(key) .. " ] - " .. description ) 
+end
+
+local function showMenu()
+  
+  local answer = nil
+  print(clr.red("----------------- ") .. clr.Blue("MENU") .. clr.red(" ----------------- "))
+  print("")
+  ll("Choose an option ...")
+  print("")
+  print( "[-] Options: ")
+  printChoice(1, "About")
+  printChoice(2, "New project")
+  print("")
+  answer = io.read("*n")
+  return answer
+end
+
+
+--[[ MAIN ]]
+init()        -- Start the machine
+os.execute("clear")
+printHeader() -- Say hello to the user
+loadModules() -- Load the tools we need
+if (runTests() == true) then
+  local menuChoice = showMenu()
+  ll("End program with choice: " .. menuChoice)
+end
+
+
+
+
+
+
+
+
+
+
+
 
