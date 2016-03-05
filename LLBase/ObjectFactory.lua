@@ -33,6 +33,9 @@ local ObjectFactory =
 
 	--[[ Creates a RenderObject that has the heading and speed properties. (it moves)]]
 	new = function(self, img, posX, posY)
+		-- Make sure we have all the propper parameteres
+		if( (not img) or (not posX) or (not posY) ) then return nil end
+
 		local instance = MovingObject:new(img)
 		instance.x = posX
 		instance.y = posY

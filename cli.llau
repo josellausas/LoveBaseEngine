@@ -49,6 +49,7 @@ end
 local function runTests()
   ll("Running tests ...")
   local busted = require("busted")
+  os.execute("busted tests.lua")
   ll("Done with tests ...")
   print("")
 
@@ -93,7 +94,9 @@ local function showMainMenu()
   local choices = {}
   choices[1] = "About"
   choices[2] = "New Project"
-  choices[9] = "Exit"
+  choices[3] = "Run Demo"
+  choices[4] = "Run Tests"
+
 
   answer = printUserMenu(choices)
   return answer
@@ -105,7 +108,8 @@ local function showNewProjectWizard()
 end
 
 
---[[ MAIN ]]
+
+--[[ THE MAIN PROGRAM ]]
 init()        -- Start the machine
 os.execute("clear")
 printHeader() -- Say hello to the user
@@ -116,14 +120,24 @@ if (runTests() == true) then
   if menuChoice == "1" then
     printHeader()
     menuChoice = showMainMenu()
+    return
   end
 
   if menuChoice == "2" then
     showNewProjectWizard()
+    return
   end
 
+  if menuChoice == "3" then
+    os.execute("./run")
+    return
+  end
 
-  ll("End program with choice: " .. menuChoice)
+  if menuChoice == "4" then
+    runTests()
+  end
+
+  ll("Couldnt find a choice for: " .. menuChoice)
 end
 
 
