@@ -3,12 +3,16 @@ local colMan = {
 	-- Use X index to find them
 	mapQuadrants = {},
 	dimensions = {x=0,y=0},
+	world = nil,
 }
 
 function colMan:init(mapWidth, mapHeight, numXDivisions, numYDivisions)
 	-- Clean up
 	self.registeredObjects 	= {}
 	self.mapQuadrants 		= {}
+
+	-- Setup a love world
+	self.world = love.physics.newWorld(0,0, true)
 
 	self.numXDivs = numXDivisions
 	self.numYDivs = numYDivisions
@@ -68,12 +72,21 @@ function colMan:getContainerForCoords(cx,cy)
 end
 
 function colMan:registerObject(objToReg)
+
+	local body = love.physics.newBody(self.world, objToReg.x, objToReg.y, "dynamic")
+
+	objToReg.collisionBody = body
+
+
 	local containerToUse = self:getContainerForCoords(objToReg.x, objToReg.y)
 	print("Inserting object into container ["..containerToUse.xquad..","..containerToUse.yquad.."]")
 	table.insert(containerToUse.objects, objToReg)
 end
 
 function colMan:update(dt, player)
+	-- Update the physics world:
+	self.world:update(dt)
+
 	local playerQuadrant = self:getContainerForCoords(player.x, player.y)
 
 	-- Check collision with objects inside the cuadrant:

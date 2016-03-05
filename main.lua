@@ -54,9 +54,22 @@ end
 function love.keypressed(key)
 end
 
+local sound = nil
+
+local function playSFX(nameID)
+	if(sound == nil) then
+		sound = love.audio.newSource("art/Sound/fall.wav", "static")
+	end
+
+	sound:play()
+end
+
 function love.keyreleased(key)
 	if key == 'z' then
 		LlauGame:zoomOut()
+
+		-- Play a sound
+		playSFX("hey")
 	end
 
 	if key == 'a' then
