@@ -1,39 +1,59 @@
-local UpdateFuncs  = require("LLBase.LLUpdateFuncs")
-local RenderFuncs  = require("LLBase.LLRenderFuncs")
-local MovingObject = require("LLBase.Renderer.MovingObject")
-local AIBehaviors  = require("LLBase.AI.Behaviors")
+--[[ 
+		Agent.lua
+		=========
 
+		About
+		-----
+		Abstracts an inteligent agent for AI 
+]]
+local UpdateFuncs  = require("LLBase.LLUpdateFuncs")			-- A function table
+local RenderFuncs  = require("LLBase.LLRenderFuncs")			-- A function table
+local MovingObject = require("LLBase.Renderer.MovingObject")	-- Base moving object
+local AIBehaviors  = require("LLBase.AI.Behaviors")				-- State Machines
+
+--[[ The Object ]]
 local IntelligentObject = 
 {
-	-- Our constructor method.
+	cretedInstances = {},
+
+	--[[ 
+		new() 
+		=====
+
+		Cretaes a new instance of an intelligent object.
+	]]
 	new = function(self, renderImage, target)
-		-- Inherits from a moving object
-		local ai = MovingObject:new(renderImage)
+
+		-- Inherit from a moving object
+		local ai = MovingObject:new(renderImage)				-- Crete the instance
 		
-		-- Tracks a moving target
-		ai.target = target
-		ai.currentBehavior = AIBehaviors.noBehavior
+		-- Set the member variables
+		ai.target = target 										-- The target
+		ai.currentBehavior = AIBehaviors.noBehavior 			-- Default behavior
 
+		--[[ changeState() ]]
 		ai.changeState = function(self, state)
-			local oldBehavior = self.currentBehavior.onExit(self)
-			state.onEnter(self)
-
-			-- Set this as the current behavir
-			self.currentBehavior = state
+			-- Perform a change of state
+			local oldBehavior = self.currentBehavior.onExit(self) -- Exit last behavior
+			state.onEnter(self)									  -- Enter new behavior
+			self.currentBehavior = state 						  -- Set this as the current behavir
 		end
 
+		--[[ Change to chill behavior ]]
 		ai.chill = function(self)
 			self.target = nil
 			self:changeState(AIBehaviors.noBehavior)
 		end
 		
-
+		--[[ Change to seek behavior. Follow the target ]]
 		ai.seek = function(self, target)
 			self.target = target
 			self:changeState(AIBehaviors.seekBehavior)
 		end
 
-		-- Sets the heading towards the given coordinate
+
+		--[[ lookAt() ]]
+		--[[ Sets the heading towards the given coordinate ]]
 		ai.lookAt = function(self, coord)
 			-- Get the targets position.
 			local targetX = coord.x
@@ -44,10 +64,7 @@ local IntelligentObject =
 			local distY = targetY - self.y
 			
 			-- Figure out our forward vector (has to be normalized)
-			local fwd = {
-				x = distX,
-				y = distY
-			}
+			local fwd = {x = distX,y = distY}
 			
 			-- Normalize to set the heading vector.
 			local length = math.sqrt((distX ^ 2) + (distY ^ 2))
@@ -61,13 +78,15 @@ local IntelligentObject =
 			self:setHeading(fwd.x, fwd.y)
 		end
 
+		--[[ update() ]]
 		-- Polymorphism
 		ai.update = function(self, dt)
-			UpdateFuncs.lifeTime(self, dt)
-			UpdateFuncs.movement(self, dt)
-			UpdateFuncs.intelligence(self, dt)
+			UpdateFuncs.lifeTime(self, dt)					-- Update lifetime
+			UpdateFuncs.movement(self, dt)					-- Upadte movement
+			UpdateFuncs.intelligence(self, dt)				-- Update decisions
 		end
 
+		--[[ Returns the distance squared to given target ]]
 		ai.distSqToTarget = function(self)
 			if not (self.target == nil) then
 				-- Get a vector from us to the target (distVector)
@@ -80,8 +99,14 @@ local IntelligentObject =
 			end
 		end
 
+		-- Add instance tracking
+		table.insert(self.cretedInstances, instances)
+		print("AI count: " .. #self.cretedInstances)
+
+		-- Return the created instance
 		return ai
 	end,
 }
 
+-- Return the Intelligent Object Factory
 return IntelligentObject
