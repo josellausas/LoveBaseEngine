@@ -65,19 +65,43 @@ local function printChoice(key, description)
   print("\t[ " .. clr.red(key) .. " ] - " .. description ) 
 end
 
-local function showMenu()
-  
-  local answer = nil
-  print(clr.red("----------------- ") .. clr.Blue("MENU") .. clr.red(" ----------------- "))
+local function printTitle(title)
+  print(clr.red("----------------- ") .. clr.Blue(title) .. clr.red(" ----------------- "))
   print("")
+end
+
+local function printUserMenu(options)
+  local answer = nil
   ll("Choose an option ...")
   print("")
   print( "[-] Options: ")
-  printChoice(1, "About")
-  printChoice(2, "New project")
+  
+  for k,v in pairs(options) do
+    printChoice(k, v)
+  end
   print("")
-  answer = io.read("*n")
+  -- Flush and read
+  answer = io.read()
+  io.flush()
   return answer
+end
+
+local function showMainMenu()
+  local answer = nil
+  printTitle("Main Menu")
+  
+  local choices = {}
+  choices[1] = "About"
+  choices[2] = "New Project"
+  choices[9] = "Exit"
+
+  answer = printUserMenu(choices)
+  return answer
+end
+
+local function showNewProjectWizard()
+
+  print("New project wizard goes here.")
 end
 
 
@@ -87,7 +111,18 @@ os.execute("clear")
 printHeader() -- Say hello to the user
 loadModules() -- Load the tools we need
 if (runTests() == true) then
-  local menuChoice = showMenu()
+  local menuChoice = showMainMenu()
+
+  if menuChoice == "1" then
+    printHeader()
+    menuChoice = showMainMenu()
+  end
+
+  if menuChoice == "2" then
+    showNewProjectWizard()
+  end
+
+
   ll("End program with choice: " .. menuChoice)
 end
 
