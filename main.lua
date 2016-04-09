@@ -26,8 +26,27 @@ end
 
 
 function love.load()
+	-- Grab the max size of the screen
+	local options = {
+		fullscreen = false, 
+		vsync = false, 
+		msaa = 0, 
+		resizable = true, 
+		borderless=false, 
+		centered = true, 
+		display = 1
+	}
+	love.window.setMode(0, 0, options)
+	--[[
+	local screen_width  = love.graphics.getWidth()
+	local screen_height = love.graphics.getHeight()
+	-- Offset for window things
+	love.window.setMode(screen_width, screen_height, options)
+	]]
+
 	love.graphics.setNewFont(12)
 	love.graphics.setBackgroundColor(120,120,120)
+	
 	LlauGame:init(gameSettings)
 end
 
@@ -70,6 +89,8 @@ function love.keyreleased(key)
 
 		-- Play a sound
 		playSFX("hey")
+
+		success = love.window.showMessageBox( "Hola", "que hace", "info",  false)
 	end
 
 	if key == 'a' then
