@@ -8,6 +8,9 @@
 local UpdateFuncs  = require("LLBase.LLUpdateFuncs")
 local RenderFuncs  = require("LLBase.LLRenderFuncs")
 
+-- Toggles Debug Mode
+local renderDebug = true
+
 -- Define the render object
 local RenderObject = 
 {
@@ -24,6 +27,7 @@ local RenderObject =
 			image 	= renderImage,			-- The image rendered
 			draw 	= RenderFuncs.basic,	-- The drawFunc
 			update 	= UpdateFuncs.lifetime,	-- The updateFunc
+			debug = renderDebug,
 		}
 		return renderObjInstance
 	end,	
