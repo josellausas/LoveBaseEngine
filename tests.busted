@@ -1,4 +1,4 @@
-require 'busted.runner'()
+
 --[[
 	tests.lua
 	=========
@@ -74,11 +74,11 @@ describe("ObjectFactory", function()
 			local Factory = require("LLBase.ObjectFactory")
 			assert.truthy(Factory)
 
-			local newInstance = Factory:new(fakeImg, 100, 200)
+			local newInsance = Factory:new(fakeImg, 100, 200)
 
-			assert.falsy(newInstance)
-			-- assert.are.same(newInstance.x, 100)
-			-- assert.are.same(newInstance.y, 200)
+			assert.truthy(newInstance)
+			assert.are.same(newInstance.x, 100)
+			assert.are.same(newInstance.y, 200)
 		end)
 
 		it("should fail for bad parameters", function()

@@ -1,18 +1,26 @@
---[[ ObjectFactory.lua ]]
+--[[
+ 
+ ObjectFactory.lua 
+ =================
+
+ Creates the game objects and gives them properties.
+ The main interface. Is in charge of creating and managing all objects. Needs to be updated and drawn.
+]]
+
+
 local AIBehaviors 		= require("LLBase.AI.Behaviors")
 local UpdateFuncs 		= require("LLBase.LLUpdateFuncs")
 local RenderFuncs 		= require("LLBase.LLRenderFuncs")
 local MovingObject 		= require("LLBase.Renderer.MovingObject")
 local IntelligentObject = require("LLBase.AI.Agent")
 
---[[ The main interface. Is in charge of creating and managing all objects. Needs to be updated and drawn. ]]
+
 local ObjectFactory = 
 {
-	--[[ Stores all the objects created with this Factory. 
-	This can be used for memory clean ups.]]
-	allObjects = {},
+	--Stores all the objects created with this Factory. This can be used for memory clean ups.
+	allObjects = {}, 	
 
-	--[[ Creates a new Artificial Intelligence actor that has a target. ]]
+	--Creates a new Artificial Intelligence actor that has a target.
 	newAI = function(self, img, posX, posY, target)
 		local inst = IntelligentObject:new(img,target)
 		inst.x = posX

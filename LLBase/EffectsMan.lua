@@ -1,12 +1,10 @@
+--[[ Effects manager ]]
 local FX = {}
 
 FX.psystem = nil
 
 function FX:init()
-
-
 	local star = love.graphics.newImage('art/Effects/whitePuff00.png')
- 
 	self.psystem = love.graphics.newParticleSystem(star, 100) -- Max particles at a time
 	self.psystem:setParticleLifetime(2, 5) -- Particles live at least 2s and at most 5s.
 	self.psystem:setEmissionRate(5)

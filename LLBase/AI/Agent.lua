@@ -95,6 +95,7 @@ local IntelligentObject =
 
 				return (distX^2 + distY^2)
 			else
+				-- Use a large number
 				return 99999
 			end
 		end

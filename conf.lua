@@ -1,6 +1,5 @@
 -- Love Config file
 function love.conf(t)
-	
 	t.identity = "baseEngine_0"
 	t.modules.joystick = false
 	t.window.title = "BaseEngine by Llau"
