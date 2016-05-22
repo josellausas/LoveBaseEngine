@@ -12,6 +12,9 @@ local AIBehaviors   = require("LLBase.AI.Behaviors")				-- State Machines
 
 local IntelligentObject = class('IntelligentObject', MovingObject) --The Object inherits from a Moving Object 
 
+local renderDebug = true
+local debugTextSize = 5
+
 --[[ 
 	Cretaes a new instance of an intelligent object.
 ]]
@@ -81,6 +84,19 @@ function IntelligentObject:distSqToTarget()
 	else
 		-- Use a large number
 		return 9999999999
+	end
+end
+
+function IntelligentObject:draw()
+	MovingObject.draw(self)
+	if(renderDebug == true) then
+		local textToPrint = ""
+		if( self.target == nil) then
+			textToPrint = "Chill"
+		else
+		    textToPrint = "" .. self:distSqToTarget()
+		end
+		love.graphics.print(textToPrint,self.x,self.y,0,debugTextSize,debugTextSize,0,0,0,0)
 	end
 end
 
