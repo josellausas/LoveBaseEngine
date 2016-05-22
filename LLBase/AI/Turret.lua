@@ -1,9 +1,6 @@
 --[[
 	A defensive Turret
 ]]
-
-local UpdateFuncs  = require("LLBase.LLUpdateFuncs")			-- A function table
-local RenderFuncs  = require("LLBase.LLRenderFuncs")			-- A function table
 local MovingObject = require("LLBase.Renderer.MovingObject")	-- Base moving object
 local AIBehaviors  = require("LLBase.AI.Behaviors")				-- State Machines
 local AI 		   = require "LLBase.AI.Agent"

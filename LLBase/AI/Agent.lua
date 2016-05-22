@@ -6,8 +6,7 @@
 		-----
 		Abstracts an inteligent agent for AI 
 ]]
-local UpdateFuncs  = require("LLBase.LLUpdateFuncs")			-- A function table
-local RenderFuncs  = require("LLBase.LLRenderFuncs")			-- A function table
+local class = require "middleclass"
 local MovingObject = require("LLBase.Renderer.MovingObject")	-- Base moving object
 local AIBehaviors  = require("LLBase.AI.Behaviors")				-- State Machines
 
@@ -81,9 +80,8 @@ local IntelligentObject =
 		--[[ update() ]]
 		-- Polymorphism
 		ai.update = function(self, dt)
-			UpdateFuncs.lifeTime(self, dt)					-- Update lifetime
-			UpdateFuncs.movement(self, dt)					-- Upadte movement
-			UpdateFuncs.intelligence(self, dt)				-- Update decisions
+			MovingObject.update(self, dt)
+			self.currentBehavior.onUpdate(self,dt)
 		end
 
 		--[[ Returns the distance squared to given target ]]

@@ -1,23 +1,24 @@
-local UpdateFuncs  = require("LLBase.LLUpdateFuncs")
-local RenderFuncs  = require("LLBase.LLRenderFuncs")
-local RenderObject = require("LLBase.Renderer.RenderObject")
+local class 		= require("middleclass")
+local RenderObject 	= require("LLBase.Renderer.RenderObject")
 
---[[ An image that can move]]
-local MovingObject = 
-{
-	new = function(self, renderImage)
-		-- Inherits from a render object
-		local inst = RenderObject:new(renderImage)
+local rotate90 = math.rad(90)
+
+--[[ An image that can move. Inheritrs from RenderObject ]]
+local MovingObject = class('MovingObject', RenderObject)
+
+function MovingObject:initialize(renderImage)
+		-- Call parents constructor
+		RenderObject.initialize(self, renderImage)
 
 		-- Movement speed
-		inst.speed = 0
+		self.speed = 0
 
 		-- Drawing scale
-		inst.scale = { x = 1, y = 1 }
+		self.scale = { x = 1, y = 1 }
 
 		-- Offsets for drawing at the center
 		local width,height = renderImage:getDimensions()
-		inst.spec = {
+		self.spec = {
 			w = width,
 			h = height,
 			offX = width * 0.5,
@@ -25,29 +26,37 @@ local MovingObject =
 		}
 
 		-- Our forwards.
-		inst.heading = 0 -- In Radians
-		
-		-- Sets the heading to a certain xy 
-		inst.setHeading = function(self, x, y)
-			-- Converts a foward vector to radians. The vector mush be normalized!!!
-			self.heading = math.atan2(y, x)
-		end
+		self.heading = 0 -- In Radians
+end
 
-		-- Polymorphysm :)
-		inst.update = function(self, dt)
-			-- Is alive
-			UpdateFuncs.lifeTime(self, dt)
-			-- Has movement
-			UpdateFuncs.movement(self, dt)
-		end
-
-		-- Completely overrides parent's implementation
-		inst.draw = function(self)
-			RenderFuncs.advanced(self)
-		end
-
-		return inst
+function MovingObject:drawDebug()
+	if(self.debug == true) then
+		love.graphics.circle("line", self.x, self.y, 15)
 	end
-}
+end
+
+function MovingObject:setHeading(x,y)
+	-- Converts a foward vector to radians. The vector mush be normalized!!!
+	self.heading = math.atan2(y, x)
+end
+
+function MovingObject:update(dt)
+	RenderObject.update(self, dt)
+	
+	-- Move towards the forwards vector at the given speed.
+	local fwdVector = {
+		x = math.cos(self.heading),
+		y = math.sin(self.heading)
+	}
+	-- Update the position with deltas. Remember the physics from shcool?
+	self.x = self.x + (fwdVector.x * self.speed * dt)
+	self.y = self.y + (fwdVector.y * self.speed * dt)
+end
+
+function MovingObject:draw()
+	-- Completely overrides parent's implementation
+	love.graphics.draw(self.image, self.x, self.y, self.heading + rotate90, self.scale.x, self.scale.y, self.spec.offX, self.spec.offY)
+	self:drawDebug()
+end
 
 return MovingObject

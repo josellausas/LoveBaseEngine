@@ -9,8 +9,6 @@
 
 
 local AIBehaviors 		= require("LLBase.AI.Behaviors")
-local UpdateFuncs 		= require("LLBase.LLUpdateFuncs")
-local RenderFuncs 		= require("LLBase.LLRenderFuncs")
 local MovingObject 		= require("LLBase.Renderer.MovingObject")
 local IntelligentObject = require("LLBase.AI.Agent")
 local Turret 			=  require("LLBase.AI.Turret")
