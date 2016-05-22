@@ -7,7 +7,7 @@
 local class 	   = require("middleclass")
 
 -- Toggles Debug Mode
-local renderDebug = true
+local renderDebug = false
 
 -- Define the render object
 local RenderObject = class('RenderObject')

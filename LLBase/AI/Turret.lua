@@ -1,37 +1,21 @@
 --[[
 	A defensive Turret
 ]]
+local class 	   = require 'middleclass'
 local MovingObject = require("LLBase.Renderer.MovingObject")	-- Base moving object
 local AIBehaviors  = require("LLBase.AI.Behaviors")				-- State Machines
 local AI 		   = require "LLBase.AI.Agent"
 
-local Turret = {}
+local Turret = class('Turret', AI)
 
-
-function Turret:new(image)
-	-- Inherit from an AI agent
-	local instance = AI:new(image, nil)
-		-- Return nil if we have failed
-		if(instance == nil) then
-			return nil
-		end
-
-		instance.bullets = {} -- Stores the bullets
-
-		function instance:attack(target)
-			self:seek(target)
-			
-			-- TODO: shoot behavior here
-		end
-	return instance
+function Turret:initialize(image)
+	AI.initialize(self, image, nil)
+	self.bullets = {} -- Stores the bullets
 end
 
-
-
+function Turret:attack(target)
+	AI.seek(self, target)			
+	-- TODO: shoot behavior here
+end
 
 return Turret
-
-
-
-
-
