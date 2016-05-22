@@ -1,5 +1,6 @@
--- [[ default Settings file ]]
-
+--[[ 
+ 	This file determines the Game optios, level names, etc
+]]
 local settings = {
 	gameTitle = "Base Game Engine",
 	levels = {
@@ -7,5 +8,4 @@ local settings = {
 		"level02",
 	},
 }
-
 return settings

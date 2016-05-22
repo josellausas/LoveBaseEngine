@@ -27,6 +27,7 @@ local camScale 		= Camera.scaleX
 
 -- Build the Game object
 local game = {}
+
 game.showUI 	= true
 game.player 	= nil
 game.team 		= {}
@@ -63,7 +64,7 @@ function game:loadLevel(levelName)
 
 	-- This is good to do when you need randomness
 	-- Seed the value with a number to always get the same randomness (for testing, and such...)
-	math.randomseed(os.time())
+	math.randomseed(os.time() * 3.12)
 
 	-- UNO
 	print("Loading images")
@@ -71,6 +72,7 @@ function game:loadLevel(levelName)
 		-- TODO: get these from the settings
 		self:loadImage("player", "art/tileBlue_04.png")
 		self:loadImage("ship", "art/playerShip3_blue.png")
+		self:loadImage("turret", "art/ufoRed.png")
 	print("Done loading images")
 
 
@@ -106,6 +108,13 @@ function game:loadLevel(levelName)
 
 			self:createAI(radius, speedRange, posX, posY)
 		end
+
+		-- Creating turrets
+		for i=1, levelSettings.numTurrets do
+			local posX = math.random(1, levelSettings.mapWidth)
+			local posY = math.random(1, levelSettings.mapHeight)
+			local turret = ObjectFactory:newTurret(self.loadedImages["turret"], posX, posY)
+		end
 	print("Done creating AI")
 
 	-- MAAAAAAAAMBO!
@@ -116,7 +125,8 @@ end
 
 
 function game:centerCamera(target)
-	Camera:setPosition(target.x - (getWidth() * 0.5 * camScale), target.y - (getHeight() * 0.5 * camScale) )
+	Camera:setPosition( target.x - (getWidth() * 0.5 * camScale), 
+						target.y - (getHeight() * 0.5 * camScale))
 end
 
 function game:centerCamPlayer()
@@ -128,7 +138,7 @@ end
 function game:createAI(radius, speedRange, posX, posY)
 	-- Use the object factory
 	local enemyAI = ObjectFactory:newAI(self.loadedImages["ship"], posX, posY, nil)
-	enemyAI.speed = math.random(speedRange)
+	enemyAI.speed = math.random(speedRange) -- Gives them a random speed
 
 	-- Add it to the enemy list
 	table.insert(self.enemies, enemyAI)
@@ -148,19 +158,22 @@ end
 
 function game:init(settings)
 	-- Fail if we have nil settings 
-	if settings == nil then print("Failed to load settings") return nil end;
+	if settings == nil then 
+		print("Failed to load settings") 
+		return nil 
+	end
 
 	-- Start to launch the game
 	print("Launching " .. settings.gameTitle .. "...")
 
 	-- Starts the Shiny stuff
 	print("Initializing Particles...")
-		EffectsMan:init({hola="Hola"})
+		EffectsMan:init({hola="Hola"})	-- Start the effects manager
 	print("Done with particle setup.")
 
 	-- Start UI
 	print("Starting UI...")
-		UIMan:init({hola="hola"})
+		UIMan:init({hola="hola"})	-- Start the UI
 	print("Done with UI.")
 
 	-- Load the levelNames

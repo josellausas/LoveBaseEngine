@@ -4,6 +4,7 @@ local level01 = {
 	name = "Base level 01",
 	levelType = "LEVEL",
 	numAI = 25,
+	numTurrets = 100,
 	targetRadius = 200,
 	speedRage = {min=100, max=500},
 	mapWidth = 4096,

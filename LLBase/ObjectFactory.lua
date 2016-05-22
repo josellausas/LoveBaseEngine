@@ -13,6 +13,7 @@ local UpdateFuncs 		= require("LLBase.LLUpdateFuncs")
 local RenderFuncs 		= require("LLBase.LLRenderFuncs")
 local MovingObject 		= require("LLBase.Renderer.MovingObject")
 local IntelligentObject = require("LLBase.AI.Agent")
+local Turret 			=  require("LLBase.AI.Turret")
 
 
 local ObjectFactory = 
@@ -22,6 +23,7 @@ local ObjectFactory =
 
 	--Creates a new Artificial Intelligence actor that has a target.
 	newAI = function(self, img, posX, posY, target)
+		if img == nil then return nil end -- Return nil if no image
 		local inst = IntelligentObject:new(img,target)
 		inst.x = posX
 		inst.y = posY
@@ -32,7 +34,17 @@ local ObjectFactory =
 
 	--[[ Creates a new static render object. These objects are aligned to the top-left (0,0) ]]
 	newStatic = function(self, img, posX, posY)
+		if img == nil then return nil end -- Return nil if no image
 		local inst = RenderObject:new(img)
+		inst.x = posX
+		inst.y = posY
+		table.insert(self.allObjects, inst)
+		return inst
+	end,
+
+	newTurret = function(self, img, posX, posY)
+		if img == nil then return nil end -- Return nil if no image
+		local inst = Turret:new(img)
 		inst.x = posX
 		inst.y = posY
 		table.insert(self.allObjects, inst)
