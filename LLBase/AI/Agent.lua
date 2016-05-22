@@ -12,7 +12,7 @@ local AIBehaviors   = require("LLBase.AI.Behaviors")				-- State Machines
 
 local IntelligentObject = class('IntelligentObject', MovingObject) --The Object inherits from a Moving Object 
 
-local renderDebug = true
+local renderDebug   = false
 local debugTextSize = 5
 
 --[[ 
@@ -89,6 +89,7 @@ end
 
 function IntelligentObject:draw()
 	MovingObject.draw(self)
+
 	if(renderDebug == true) then
 		local textToPrint = ""
 		if( self.target == nil) then
@@ -98,6 +99,7 @@ function IntelligentObject:draw()
 		end
 		love.graphics.print(textToPrint,self.x,self.y,0,debugTextSize,debugTextSize,0,0,0,0)
 	end
+
 end
 
 -- Return the Intelligent Object Factory

@@ -28,6 +28,7 @@ local camScale 		= Camera.scaleX
 -- Build the Game object
 local game = {}
 
+game.showDebug = true
 game.showUI 	= true
 game.player 	= nil
 game.team 		= {}
@@ -231,6 +232,7 @@ end
 --[[
 	Updates the Game
 ]]
+local textToPrint = ""
 function game:update(dt)
 
 	ColMan:update(dt, self.player)
@@ -246,6 +248,7 @@ function game:update(dt)
 
 	-- Update shiny stuff
 	-- EffectsMan:update(dt)
+	textToPrint = "Total Enemies: " .. #game.enemies
 end 
 
 --[[
@@ -262,6 +265,10 @@ function game:draw()
 
 	-- This goes on top of anything else
 	UIMan:draw()
+
+	if(game.showDebug == true) then
+		love.graphics.print(textToPrint,10,10,0,1,1,0,0,0,0)
+	end
 
 end
 
