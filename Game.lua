@@ -77,7 +77,7 @@ function game:loadLevel(levelName)
 		-- TODO: get these from the settings
 		self:loadImage("player", "art/tileBlue_04.png")
 		self:loadImage("ship", "art/playerShip3_blue.png")
-		self:loadImage("turret", "art/ufoRed.png")
+		self:loadImage("turret", "art/Meteors/meteorBrown_big1.png")
 		self:loadImage("explosion", "art/Effects/puff00.png")
 	print("Done loading images")
 
