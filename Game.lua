@@ -29,12 +29,14 @@ local camScale 		= Camera.scaleX
 local game = {}
 
 local enemyCount = 0
+local turretCount = 0
 
 game.showDebug = true
 game.showUI 	= true
 game.player 	= nil
 game.team 		= {}
 game.enemies 	= {}
+game.turrets = {}
 game.currentLevelSettings = nil
 game.loadedImages = {
 	playerTile = nil,
@@ -117,6 +119,10 @@ function game:loadLevel(levelName)
 			local posX = math.random(1, levelSettings.mapWidth)
 			local posY = math.random(1, levelSettings.mapHeight)
 			local turret = ObjectFactory:newTurret(self.loadedImages["turret"], posX, posY)
+			turretCount = turretCount + 1
+			local turretTag = "turret"..turretCount
+			self.turrets[turretTag] = turret
+			turret.tag = turretTag
 		end
 	print("Done creating AI")
 
@@ -264,7 +270,16 @@ function game:update(dt)
 			v.renderFlag = false
 			self.enemies[k] = nil
 		end
-		
+
+		-- Check for collisions with the Turrets
+		for turretKey, turretValue in pairs(self.turrets) do
+			if(turretValue:isInsideCircle(v.x, v.y, 40)) then
+				v.renderFlag = false
+				self.enemies[k] = nil
+				turretValue.renderFlag = false
+				self.turrets[turretKey] = nil
+			end
+		end
 	end
 end 
 
