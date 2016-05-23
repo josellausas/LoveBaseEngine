@@ -69,7 +69,7 @@ function game:loadLevel(levelName)
 
 	-- This is good to do when you need randomness
 	-- Seed the value with a number to always get the same randomness (for testing, and such...)
-	math.randomseed(os.time() * 3.12)
+	math.randomseed(os.time() * os.time())
 
 	-- UNO
 	print("Loading images")
@@ -78,6 +78,7 @@ function game:loadLevel(levelName)
 		self:loadImage("player", "art/tileBlue_04.png")
 		self:loadImage("ship", "art/playerShip3_blue.png")
 		self:loadImage("turret", "art/ufoRed.png")
+		self:loadImage("explosion", "art/Effects/puff00.png")
 	print("Done loading images")
 
 
@@ -276,8 +277,8 @@ function game:update(dt)
 			if(turretValue:isInsideCircle(v.x, v.y, 40)) then
 				v.renderFlag = false
 				self.enemies[k] = nil
-				turretValue.renderFlag = false
-				self.turrets[turretKey] = nil
+				-- turretValue.renderFlag = false
+				turretValue.image = self.loadedImages["explosion"]
 			end
 		end
 	end
