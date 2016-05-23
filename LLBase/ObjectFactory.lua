@@ -12,6 +12,9 @@ local AIBehaviors 		= require("LLBase.AI.Behaviors")
 local MovingObject 		= require("LLBase.Renderer.MovingObject")
 local IntelligentObject = require("LLBase.AI.Agent")
 local Turret 			=  require("LLBase.AI.Turret")
+local Player = require("LLBase.Game.Player")
+
+local playerCount = 0
 
 
 local ObjectFactory = 
@@ -60,6 +63,18 @@ local ObjectFactory =
 
 		table.insert(self.allObjects, instance)
 		return instance
+	end,
+
+	newPlayer = function(self, img, posX, posY)
+		if( (not img) or (not posX) or (not posY) ) then return nil end
+		playerCount = playerCount + 1
+
+		local player = Player:new(playerCount, img)
+		player.x = posX
+		player.y = posY
+
+		table.insert(self.allObjects, player)
+		return player
 	end,
 
 	--[[ Updates all RenderObjects ]]

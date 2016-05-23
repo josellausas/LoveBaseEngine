@@ -54,9 +54,49 @@ function MovingObject:update(dt)
 end
 
 function MovingObject:draw()
-	-- Completely overrides parent's implementation
-	love.graphics.draw(self.image, self.x, self.y, self.heading + rotate90, self.scale.x, self.scale.y, self.spec.offX, self.spec.offY)
+	if(self.renderFlag == true) then
+		-- Completely overrides parent's implementation
+		love.graphics.draw(self.image, self.x, self.y, self.heading + rotate90, self.scale.x, self.scale.y, self.spec.offX, self.spec.offY)
+	end
 	self:drawDebug()
 end
+
+
+--[[
+	Rerturns the (distance^2) to a coordinate (x,y)
+
+	@param x The x coordinate
+	@param y The y coordinate
+
+	@returns The distance squared
+]]
+function MovingObject:distSqToPosition(x,y)
+	-- Get a vector from us to the target (distVector)
+	local distX = x - self.x
+	local distY = y - self.y
+	local squaredDistance = (distX * distX) + (distY * distY) -- Good 'ol Pythagoras
+	return squaredDistance
+end
+
+--[[ 
+	Checks if we are inside the given circle ({x,y,r})
+
+	@returns true if collision
+]]
+function MovingObject:isInsideCircle(x,y,radius)
+	-- ;) If a distance vector betweer our position and the circle is smaller than the radius, we are inside
+	local distSq = self:distSqToPosition(x, y)
+	local radiusSq = radius * radius
+
+	if(distSq < radiusSq) then
+		-- We are inside the circle
+		return true
+	else
+		-- We are not inside the circle
+	    return false
+	end
+end
+
+
 
 return MovingObject

@@ -19,7 +19,7 @@ local ObjectFactory 	= require("LLBase.ObjectFactory")		-- La fabrica de objetos
 local UIMan 			= require("LLBase.UIManager")			-- El encargado de los menús (en desarrollo)
 local ColMan 			= require("LLBase.CollisionManager")	-- El encargado de las colisiones (en desarrollo)
 local EffectsMan		= require("LLBase.EffectsMan")			-- El encargado de los efectos (en desarrollo)
-
+local Player 			= require 'LLBase.Game.Player'
 
 -- Setup the camera defaults
 local cameraSpeed 	= 800
@@ -27,6 +27,8 @@ local camScale 		= Camera.scaleX
 
 -- Build the Game object
 local game = {}
+
+local enemyCount = 0
 
 game.showDebug = true
 game.showUI 	= true
@@ -94,7 +96,7 @@ function game:loadLevel(levelName)
 
 	-- CUATRO
 	print("Creating Player")
-		self.player = ObjectFactory:new(self.loadedImages["player"], math.random(1, levelSettings.mapWidth), math.random(1, levelSettings.mapHeight))
+		self.player = ObjectFactory:newPlayer(self.loadedImages["player"],levelSettings.mapWidth*0.5,  levelSettings.mapHeight*0.5)
 		ColMan:registerObject(self.player)
 	print("Done creating Player")
 
@@ -142,7 +144,10 @@ function game:createAI(radius, speedRange, posX, posY)
 	enemyAI.speed = math.random(speedRange) -- Gives them a random speed
 
 	-- Add it to the enemy list
-	table.insert(self.enemies, enemyAI)
+	enemyCount = enemyCount + 1
+	local tag = "enemy"..enemyCount
+	self.enemies[tag] = enemyAI
+	enemyAI.tag = tag
 
 	-- Register it for collision detection
 	ColMan:registerObject(enemyAI)
@@ -248,7 +253,19 @@ function game:update(dt)
 
 	-- Update shiny stuff
 	-- EffectsMan:update(dt)
-	textToPrint = "Total Enemies: " .. #game.enemies
+	textToPrint = "Total Enemies: " .. enemyCount
+
+	local p1Circle = self.player:getCollisionCircle()
+
+	for k,v in pairs(self.enemies) do	
+		-- Check for collision with player
+		local collisionDetected = v:isInsideCircle(p1Circle.x, p1Circle.y, p1Circle.r)
+		if(collisionDetected == true) then
+			v.renderFlag = false
+			self.enemies[k] = nil
+		end
+		
+	end
 end 
 
 --[[

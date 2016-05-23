@@ -33,10 +33,13 @@ function RenderObject:initialize(renderImage)
 	
 	-- Debug flag	
 	self.debug = renderDebug
+	self.renderFlag = true
 end
 
 function RenderObject:draw()
-	love.graphics.draw(self.image, self.x, self.y)
+	if(self.renderFlag) then
+		love.graphics.draw(self.image, self.x, self.y)
+	end
 	-- Draw a debug image
 	self:drawDebug()
 end
@@ -44,5 +47,6 @@ end
 function RenderObject:update(dt)
 	self.lifeTime = self.lifeTime + dt
 end
+
 
 return RenderObject
