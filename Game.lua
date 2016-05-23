@@ -259,7 +259,7 @@ function game:update(dt)
 	Camera:move(camDx, camDy)
 
 	-- Update shiny stuff
-	-- EffectsMan:update(dt)
+	EffectsMan:update(dt)
 	textToPrint = "Total Enemies: " .. enemyCount
 
 	local p1Circle = self.player:getCollisionCircle()
@@ -290,10 +290,10 @@ end
 function game:draw()
 	-- All a matter of perspective ;)
 	Camera:set()
-		-- Draw the objects
-		ObjectFactory:draw()
-		-- Draw the shiny shit on-top
-		-- EffectsMan:draw()
+	-- Draw the objects
+	ObjectFactory:draw()
+	-- Draw the shiny shit on-top
+	EffectsMan:draw()
 	Camera:unset()
 
 	-- This goes on top of anything else

@@ -11,7 +11,6 @@ function FX:init()
 	self.psystem:setSizeVariation(0.2)
 	self.psystem:setLinearAcceleration(-100, -100, 100, 100) -- Random movement in all directions.
 	self.psystem:setColors(255, 255, 255, 255, 255, 255, 255, 0) -- Fade to transparency.
-
 end
 
 function FX:update(dt)
