@@ -31,7 +31,7 @@ local game = {}
 local enemyCount = 0
 local turretCount = 0
 
-game.showDebug = true
+game.showDebug  = true
 game.showUI 	= true
 game.player 	= nil
 game.team 		= {}
@@ -278,7 +278,7 @@ function game:update(dt)
 				v.renderFlag = false
 				self.enemies[k] = nil
 				-- turretValue.renderFlag = false
-				turretValue.image = self.loadedImages["explosion"]
+				turretValue:setImage(self.loadedImages["explosion"])
 			end
 		end
 	end

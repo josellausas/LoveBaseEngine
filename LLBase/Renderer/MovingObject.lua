@@ -29,6 +29,18 @@ function MovingObject:initialize(renderImage)
 		self.heading = 0 -- In Radians
 end
 
+function MovingObject:setImage(image)
+	-- Offsets for drawing at the center
+	local width,height = image:getDimensions()
+	self.spec = {
+		w = width,
+		h = height,
+		offX = width * 0.5,
+		offY = height * 0.5
+	}
+	self.image = image
+end
+
 function MovingObject:drawDebug()
 	if(self.debug == true) then
 		love.graphics.circle("line", self.x, self.y, 15)
