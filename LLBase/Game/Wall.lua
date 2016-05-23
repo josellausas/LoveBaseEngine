@@ -1,7 +1,8 @@
 --[[Wall]]
 local class = require 'middleclass'
+local PhysicalObject = require "LLBase.Renderer.PhysicalObject"
 
-local Wall = class('Wall')
+local Wall = class('Wall', PhysicalObject)
 
 function Wall:initialize(width, height)
 	self.x = 0

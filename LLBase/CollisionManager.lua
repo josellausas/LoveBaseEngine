@@ -11,11 +11,14 @@ function colMan:init(mapWidth, mapHeight, numXDivisions, numYDivisions)
 	self.registeredObjects 	= {}
 	self.mapQuadrants 		= {}
 
+	-- Set the physics scale
+	love.physics.setMeter(64)
 	-- Setup a love world
 	self.world = love.physics.newWorld(0,0, true)
 
-	self.numXDivs = numXDivisions
-	self.numYDivs = numYDivisions
+
+	self.numXDivs   = numXDivisions
+	self.numYDivs   = numYDivisions
 	self.divXLenght = mapWidth / numXDivisions
 	self.divYLength = mapHeight / numYDivisions
 
@@ -86,6 +89,7 @@ end
 function colMan:update(dt, player)
 	-- Update the physics world:
 	self.world:update(dt)
+	
 
 	local playerQuadrant = self:getContainerForCoords(player.x, player.y)
 

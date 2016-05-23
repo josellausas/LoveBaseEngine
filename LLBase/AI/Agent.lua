@@ -6,12 +6,14 @@
 		-----
 		Abstracts an inteligent agent for AI 
 ]]
-local class 		= require "middleclass"
-local MovingObject  = require("LLBase.Renderer.MovingObject")	-- Base moving object
+local class 		= require "middleclass"							-- OOP
+local MovingObject  = require("LLBase.Renderer.MovingObject")		-- Base moving object
 local AIBehaviors   = require("LLBase.AI.Behaviors")				-- State Machines
 
-local IntelligentObject = class('IntelligentObject', MovingObject) --The Object inherits from a Moving Object 
+-- The AI Class
+local IntelligentObject = class('IntelligentObject', MovingObject) 	--The Object inherits from a Moving Object 
 
+-- Some flags
 local renderDebug   = false
 local debugTextSize = 5
 
@@ -40,7 +42,9 @@ end
 
 --[[ Change to seek behavior. Follow the target ]]
 function IntelligentObject:seek(target)
+	-- Seek the target!
 	self.target = target
+	-- Do the change state
 	self:changeState(AIBehaviors.seekBehavior)
 end
 	
