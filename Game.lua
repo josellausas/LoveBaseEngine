@@ -1,87 +1,124 @@
---[[ Game.lua by jose@josellausas.com 
+--[[!* 
+ @file 		Game.lua
+ @author 	jose@josellausas
+ @see 		levels/level01.lua
+ @see 		LLBase/ObjectFactory.lua
+ @abstract
 
-Main Game
-=========
+About
+-----
+This is the main file for the Game. It centrilizes the control for behavior
 
-EN
---
-Main game file. Manage gameplay and user interaction here.
-
-
-ES
---
-Archivo principal desde el cual se controlan las 
-reglas del juego y la interacción con el usuario.
-
+Notes
+-----
+When the game loads, it scans the `/levels` directory for `*.lua` files and loads
+each one as a level. 
 ]]
-local Camera 			= require("LLBase.LLCamera")			-- La camara del juagador
-local ObjectFactory 	= require("LLBase.ObjectFactory")		-- La fabrica de objetos 
-local UIMan 			= require("LLBase.UIManager")			-- El encargado de los menús (en desarrollo)
-local ColMan 			= require("LLBase.CollisionManager")	-- El encargado de las colisiones (en desarrollo)
-local EffectsMan		= require("LLBase.EffectsMan")			-- El encargado de los efectos (en desarrollo)
-local Player 			= require 'LLBase.Game.Player'
+local class 			= require('middleclass')
+local Camera 			= require("LLBase.LLCamera")			--- > The user's view 
+local ObjectFactory 	= require("LLBase.ObjectFactory")		--- > Object Manager
+local UIMan 			= require("LLBase.UIManager")			--- > User Interface Manager 		(en desarrollo)
+local ColMan 			= require("LLBase.CollisionManager")	--- > The Collision Manager 		(en desarrollo)
+local EffectsMan		= require("LLBase.EffectsMan")			--- > The SFX Manager 				(en desarrollo)
+local Player 			= require 'LLBase.Game.Player'			--- > The Player Object
+
 
 -- Setup the camera defaults
-local cameraSpeed 	= 800
-local camScale 		= Camera.scaleX
+local cameraSpeed 	= 800										---> Controlls how fast the camera can move
+local camScale 		= Camera.scaleX								---> Scales the camera
+local textToPrint = ""
+--[[!*
+	The game itself. Holds all
+]]
+local game = 
+{
+	showDebug 			 = true,
+	showUI 				 = true,
+	player 				 = nil,
+	team 				 = nil,
+	enemies 			 = nil,
+	turrets 			 = nil,
+	currentLevelSettings = nil,
+	loadedImages 		 = nil,
+}
 
--- Build the Game object
-local game = {}
-
-local enemyCount = 0
-local turretCount = 0
+-- Some flags. Used for building unique tags when Units are created
+local _enemyCount 	= 0
+local _turretCount 	= 0
+local _imageCount 	= 0
 
 game.showDebug  = true
 game.showUI 	= true
 game.player 	= nil
 game.team 		= {}
 game.enemies 	= {}
-game.turrets = {}
+game.turrets 	= {}
 game.currentLevelSettings = nil
 game.loadedImages = {
 	playerTile = nil,
 	ship = nil,
 }
 	
--- Window width
+--[[!*
+	The Scree's Width
+
+	@return The Height number
+]]
 local function getWidth()
 	return love.graphics.getWidth()
 end
 
--- Window height
+--[[!*
+	The Screen's Height
+
+	@return The Height number
+]]
 local function getHeight()
 	return love.graphics.getHeight()
 end
 
---[[ Loads an image to the loaded images dictionary ]]
-function game:loadImage(name, path)
 
+--[[!* 
+	Loads an image to the loaded images dictionary 
+	
+	@param	name	The image string identifier
+	@param	path	The Images Path
+]]
+function game:loadImage(name, path)
 	if not (self.loadedImages[name] == nil) then
 		print("WARNING: RELOADING AN IMAGE!!!")
 	end
-	
+	-- Store the thing in our dictionary
+	-- We have to be careful how many times we call this
 	self.loadedImages[name] = love.graphics.newImage(path)
+	-- Keep track of the count:
+	_imageCount = _imageCount + 1
 end
 
 
---[[ Loads a gameLevel]]
+--[[!*
+	Loads a gameLevel
+
+	@param levelName The levelname from the levels folder
+]]
 function game:loadLevel(levelName)
 
 	-- This is good to do when you need randomness
 	-- Seed the value with a number to always get the same randomness (for testing, and such...)
-	math.randomseed(os.time() * os.time())
+	math.randomseed(os.time())
 
+	--==========
 	-- UNO
 	print("Loading images")
 		-- Load the images here
 		-- TODO: get these from the settings
-		self:loadImage("player", "art/tileBlue_04.png")
-		self:loadImage("ship", "art/playerShip3_blue.png")
-		self:loadImage("turret", "art/Meteors/meteorBrown_big1.png")
+		self:loadImage("player", 	"art/tileBlue_04.png")
+		self:loadImage("ship", 		"art/playerShip3_blue.png")
+		self:loadImage("turret", 	"art/Meteors/meteorBrown_big1.png")
 		self:loadImage("explosion", "art/Effects/puff00.png")
 	print("Done loading images")
 
-
+	--==========
 	-- DOS
 	print("Starting level " .. levelName)
 		-- Load level settings from file
@@ -89,70 +126,104 @@ function game:loadLevel(levelName)
 		self.currentLevelSettings = levelSettings
 	print("Level settings loaded!")
 
-
+	--==========
 	-- TRES
 	print("Initializing Collisions")
 		-- We are using 10x10 grids for now.
 		ColMan:init(levelSettings.mapWidth, levelSettings.mapHeight, 10, 10)
 	print("Done creating collision map")
 
-
+	--==========
 	-- CUATRO
 	print("Creating Player")
 		self.player = ObjectFactory:newPlayer(self.loadedImages["player"],levelSettings.mapWidth*0.5,  levelSettings.mapHeight*0.5)
 		ColMan:registerObject(self.player)
 	print("Done creating Player")
 
+	--==========
 	-- CINCO
 	print("Creating AI")
+		-- Figure out the posible places we can create an enemy
 		local radius 		= levelSettings.targetRadius
 		local speedRange 	= levelSettings.targetRadius
 
+		-- Loop and randomize between our space of posibilities
 		for i=1,levelSettings.numAI do
 			local posX = math.random(1, levelSettings.mapWidth)
 			local posY = math.random(1, levelSettings.mapHeight)
-
+			-- Creativity by Creation
 			self:createAI(radius, speedRange, posX, posY)
 		end
 
 		-- Creating turrets
 		for i=1, levelSettings.numTurrets do
+			-- A random position
 			local posX = math.random(1, levelSettings.mapWidth)
 			local posY = math.random(1, levelSettings.mapHeight)
+
+			-- Create a turret
 			local turret = ObjectFactory:newTurret(self.loadedImages["turret"], posX, posY)
-			turretCount = turretCount + 1
-			local turretTag = "turret"..turretCount
+			
+			-- Keep track of the things
+			_turretCount = _turretCount + 1
+
+			-- Sort them by tags so we can find them later
+			local turretTag = "turret".._turretCount
 			self.turrets[turretTag] = turret
 			turret.tag = turretTag
 		end
 	print("Done creating AI")
 
+	--==========
 	-- MAAAAAAAAMBO!
-	self:centerCamera({x=levelSettings.mapHeight*0.5,y=levelSettings.mapWidth*0.5})
+	self:centerCamera({
+		x=levelSettings.mapHeight*0.5,
+		y=levelSettings.mapWidth*0.5
+	})
 
 	-- MORE MUSIC HERE ->
+	-- TODO: Music
 end
 
 
+
+--[[!*
+	Centers the camera on a coordinate
+
+	@param target {x,y}
+]]
 function game:centerCamera(target)
 	Camera:setPosition( target.x - (getWidth() * 0.5 * camScale), 
 						target.y - (getHeight() * 0.5 * camScale))
 end
 
+
+--[[!*
+	Centers the camera on the player's position
+]]
 function game:centerCamPlayer()
 	self:centerCamera(self.player)
 end
 
 
+--[[!*
+	Creates a new Artifical Inteligence
 
+	@param radius The radius
+	@param speedRange The range of speed it can have
+	@param posX X position
+	@param posY Y position
+]]
 function game:createAI(radius, speedRange, posX, posY)
 	-- Use the object factory
 	local enemyAI = ObjectFactory:newAI(self.loadedImages["ship"], posX, posY, nil)
 	enemyAI.speed = math.random(speedRange) -- Gives them a random speed
 
 	-- Add it to the enemy list
-	enemyCount = enemyCount + 1
-	local tag = "enemy"..enemyCount
+	_enemyCount = _enemyCount + 1
+	local tag = "enemy".._enemyCount
+
+	-- Sort by tags so we can find them later
 	self.enemies[tag] = enemyAI
 	enemyAI.tag = tag
 
@@ -163,12 +234,20 @@ function game:createAI(radius, speedRange, posX, posY)
 	enemyAI:seek(self.player)
 end
 
-
+--[[!*
+	Loads the User's Settings
+	@return A table
+]]
 local function loadUserSettings()
 	-- TODO: Implement this
 	return {currentLevel = "level01"}
 end
 
+--[[!*
+	Initializes the game
+
+	@param settings {}
+]]
 function game:init(settings)
 	-- Fail if we have nil settings 
 	if settings == nil then 
@@ -220,8 +299,10 @@ function game:init(settings)
 	self:loadLevel(userSettings.currentLevel)
 end
 
---[[
+--[[!*
 	Updates the Camera
+
+	@param dt Time delta
 ]]
 local function getCameraDeltas(dt)
 	local moveAmount = dt * cameraSpeed
@@ -241,10 +322,12 @@ local function getCameraDeltas(dt)
 end
 
 
---[[
+--[[!*
 	Updates the Game
+
+	@param	dt	Delta Time
 ]]
-local textToPrint = ""
+
 function game:update(dt)
 
 	ColMan:update(dt, self.player)
@@ -260,7 +343,7 @@ function game:update(dt)
 
 	-- Update shiny stuff
 	EffectsMan:update(dt)
-	textToPrint = "Total Enemies: " .. enemyCount
+	textToPrint = "Total Enemies: " .. _enemyCount
 
 	local p1Circle = self.player:getCollisionCircle()
 
@@ -284,7 +367,7 @@ function game:update(dt)
 	end
 end 
 
---[[
+--[[!*
 	Draws the Game
 ]]
 function game:draw()
@@ -305,13 +388,19 @@ function game:draw()
 
 end
 
-
+--[[!*
+	Zooms out the camera
+]]
 function game:zoomOut()
 	Camera:move(-getWidth()*0.5, -getHeight()*0.5)
 	camScale = camScale + 1
 	Camera:setScale(camScale,camScale)
 end
 
+
+--[[!*
+	Zooms in the camera
+]]
 function game:zoomIn()
 	camScale = camScale - 1
 	Camera:setScale(camScale,camScale)
@@ -319,4 +408,3 @@ function game:zoomIn()
 end
 
 return game
-
