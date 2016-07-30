@@ -1,3 +1,9 @@
+---------------------------------------------------------------
+-- The player module
+--
+-- @module Player
+-- @author jose@josellausas.com
+---------------------------------------------------------------
 local class = require 'middleclass'
 local MovingObject = require 'LLBase.Renderer.MovingObject'
 local Player = class('Player', MovingObject)
@@ -10,6 +16,12 @@ local _DefaultConfig =
 	defaultCollisionRadius = 80
 }
 
+---------------------------------------------------------------
+-- Initializes the Player
+--
+-- @number playerNumber The player's number
+-- @param playerImage **(Image)** The player's avatar
+---------------------------------------------------------------
 function Player:initialize(playerNumber, playerImage)
 	-- Call the Parent's initializer for polymorphysm
 	MovingObject.initialize(self, playerImage)
@@ -20,9 +32,11 @@ function Player:initialize(playerNumber, playerImage)
 	self.damage = _DefaultConfig.defaultDamage 			-- How much damage per hit we can do
 end
 
---[[
-	@returns true if player is alive
-]]
+---------------------------------------------------------------
+-- Tells if the player is alive
+--
+-- @return true if player is alive
+---------------------------------------------------------------
 function Player:isAlive()
 	if(self.hp > 0) then
 		return true
@@ -31,7 +45,12 @@ function Player:isAlive()
 	end
 end
 
---[[ Respawns the player at a given position ]]
+---------------------------------------------------------------
+-- Respawns the player at a given position 
+--
+-- @number x The x coordinate
+-- @number y The y coordinate
+---------------------------------------------------------------
 function Player:respawn(x,y)
 	self.x = x
 	self.y = y

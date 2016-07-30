@@ -1,9 +1,17 @@
+-------------------------------------------------------------------------------------
+-- A thread example
+--
+-- @author jose@josellausas.com
+-------------------------------------------------------------------------------------
 require("love.timer")
 require("love.image")
 
 --To perform thread operations, you have to find yourself
 local this_thread = love.thread.getThread() --or love._curthread
 
+--------------------------------------------------
+-- Generates a new image
+--------------------------------------------------
 function generateImage()
   math.randomseed(love.timer.getTime())
   function pixelFunction(x, y, r, g, b, a)

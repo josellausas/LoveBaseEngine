@@ -1,10 +1,10 @@
---[[
-	RenderObject.lua
-	================
-
-	A basic render object for Love
-]]
-local class 	   = require("middleclass")
+---------------------------------------------------------------
+-- A basic render object for Love
+--
+-- @author jose@zunware.com
+-- @module RenderObject
+---------------------------------------------------------------
+local class = require("middleclass")
 
 -- Toggles Debug Mode
 local renderDebug = false
@@ -12,12 +12,20 @@ local renderDebug = false
 -- Define the render object
 local RenderObject = class('RenderObject')
 
+---------------------------------------------------------------
+-- Draws the object in debug mode
+---------------------------------------------------------------
 function RenderObject:drawDebug()
 	if(self.debug == true) then
 		love.graphics.circle("line", self.x, self.y, 15)
 	end
 end
 
+---------------------------------------------------------------
+-- Initializes a RenderObject
+--
+-- @param renderImage **(Image)** The image avatar
+---------------------------------------------------------------
 function RenderObject:initialize(renderImage)
 	-- Catch bad parameters
 	if(renderImage == nil) then 
@@ -36,6 +44,9 @@ function RenderObject:initialize(renderImage)
 	self.renderFlag = true
 end
 
+---------------------------------------------------------------
+-- The render function
+---------------------------------------------------------------
 function RenderObject:draw()
 	if(self.renderFlag) then
 		love.graphics.draw(self.image, self.x, self.y)
@@ -44,6 +55,11 @@ function RenderObject:draw()
 	self:drawDebug()
 end
 
+---------------------------------------------------------------
+-- Heartbeat function
+-- 
+-- @number dt Delta Time slice
+---------------------------------------------------------------
 function RenderObject:update(dt)
 	self.lifeTime = self.lifeTime + dt
 end

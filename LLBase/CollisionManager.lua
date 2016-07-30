@@ -1,3 +1,8 @@
+-----------------------------------------------------------
+-- Collision Manager
+--
+-- @author jose@josellausas.com
+-----------------------------------------------------------
 local colMan = {
 	registeredObjects = {},
 	-- Use X index to find them
@@ -6,6 +11,14 @@ local colMan = {
 	world = nil,
 }
 
+-----------------------------------------------------------
+-- Initializes the collision manager
+--
+-- @param mapWidth **(Number)** The map width
+-- @param mapHeight **(Number)** The map height
+-- @param numXDivisions **(Number)** The number of horizontal divisions
+-- @param numYDivisions **(Number)** The number of vertical divisions
+-----------------------------------------------------------
 function colMan:init(mapWidth, mapHeight, numXDivisions, numYDivisions)
 	-- Clean up
 	self.registeredObjects 	= {}
@@ -28,7 +41,7 @@ function colMan:init(mapWidth, mapHeight, numXDivisions, numYDivisions)
 	print("Creating a "..numXDivisions.. " x " .. numYDivisions .. " collision map")
 	-- Creates rows
 
-
+	-- Loop the divisions and process them
 	for row=1,numXDivisions do
 		local rowContainer = {}
 
@@ -47,6 +60,14 @@ function colMan:init(mapWidth, mapHeight, numXDivisions, numYDivisions)
 
 end
 
+
+-----------------------------------------------------------
+-- Returns a list of objects inside a given quadrant
+--
+-- @number x The x factor
+-- @number y The y factor
+-- @return **(Table)** A table of objects inside the quadrant
+-----------------------------------------------------------
 function colMan:getQuadrantObjects(x,y)
 	local container = self.mapQuadrants[x][y]
 
@@ -61,6 +82,13 @@ function colMan:getQuadrantObjects(x,y)
 	return container.objects
 end
 
+-----------------------------------------------------------
+-- Gets the sector keys for the given coordinates
+-- 
+-- @number coordX The x coordinates
+-- @number coordY The y coordinates
+-- @return **(Array)** __[x,y]__ The x and y coordinate
+-----------------------------------------------------------
 function colMan:getKeysForCoords(coordX, coordY)
 	local xNum = math.floor(coordX / self.divXLenght)
 	local yNum = math.floor(coordY / self.divYLength)
@@ -68,12 +96,20 @@ function colMan:getKeysForCoords(coordX, coordY)
 	return xNum, yNum
 end
 
-
+-----------------------------------------------------------
+-- Returns the cotainer quadrant for the given coordinates
+--
+-- @number cx The x coordiante
+-- @number cy The y coordinate
+-- @return **(Table)** The quadrant
+-----------------------------------------------------------
 function colMan:getContainerForCoords(cx,cy)
 	local x,y = self:getKeysForCoords(cx,cy)
 	return self.mapQuadrants[x+1][y+1]
 end
 
+-----------------------------------------------------------
+-----------------------------------------------------------
 function colMan:registerObject(objToReg)
 
 	local body = love.physics.newBody(self.world, objToReg.x, objToReg.y, "dynamic")
@@ -86,6 +122,8 @@ function colMan:registerObject(objToReg)
 	table.insert(containerToUse.objects, objToReg)
 end
 
+-----------------------------------------------------------
+-----------------------------------------------------------
 function colMan:update(dt, player)
 	-- Update the physics world:
 	self.world:update(dt)

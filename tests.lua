@@ -1,10 +1,12 @@
+--------------------------------------------------
+-- Defines the unit tests for the LLBase
+--------------------------------------------------
 require 'busted.runner'()
---[[
-	tests.lua
-	=========
 
-	Defines the unit tests for the LLBase
-]]
+
+--------------------------------------------------
+-- Checks if the file exists
+--------------------------------------------------
 local function file_exists(name)
    local f = io.open(name,"r")
    if f~=nil then io.close(f) return true else return false end

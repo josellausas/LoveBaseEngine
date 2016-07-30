@@ -1,3 +1,9 @@
+---------------------------------------------------------------
+-- The movingObject base class
+--
+-- @author jose@josellausas.com
+-- @module MovingObject
+---------------------------------------------------------------
 local class 		= require("middleclass")
 local RenderObject 	= require("LLBase.Renderer.RenderObject")
 
@@ -6,6 +12,11 @@ local rotate90 = math.rad(90)
 --[[ An image that can move. Inheritrs from RenderObject ]]
 local MovingObject = class('MovingObject', RenderObject)
 
+---------------------------------------------------------------
+-- Initializes a moving object
+--
+-- @param renderImage **(Image)** The image avatar
+---------------------------------------------------------------
 function MovingObject:initialize(renderImage)
 		-- Call parents constructor
 		RenderObject.initialize(self, renderImage)
@@ -29,6 +40,12 @@ function MovingObject:initialize(renderImage)
 		self.heading = 0 -- In Radians
 end
 
+
+---------------------------------------------------------------
+-- Sets the image avatar
+--
+-- @param image **(Image)** The image avatar
+---------------------------------------------------------------
 function MovingObject:setImage(image)
 	-- Offsets for drawing at the center
 	local width,height = image:getDimensions()
@@ -41,17 +58,31 @@ function MovingObject:setImage(image)
 	self.image = image
 end
 
+---------------------------------------------------------------
+-- Draws the image in debug mode
+---------------------------------------------------------------
 function MovingObject:drawDebug()
 	if(self.debug == true) then
 		love.graphics.circle("line", self.x, self.y, 15)
 	end
 end
 
+---------------------------------------------------------------
+-- Sets the object's heading
+--
+-- @number x The x coordinate
+-- @number y The y coordinate
+---------------------------------------------------------------
 function MovingObject:setHeading(x,y)
 	-- Converts a foward vector to radians. The vector mush be normalized!!!
 	self.heading = math.atan2(y, x)
 end
 
+---------------------------------------------------------------
+-- Update time deltas
+--
+-- @number dt Time slice (delta T)
+---------------------------------------------------------------
 function MovingObject:update(dt)
 	RenderObject.update(self, dt)
 	
@@ -65,23 +96,28 @@ function MovingObject:update(dt)
 	self.y = self.y + (fwdVector.y * self.speed * dt)
 end
 
+
+---------------------------------------------------------------
+-- Draw method
+---------------------------------------------------------------
 function MovingObject:draw()
 	if(self.renderFlag == true) then
 		-- Completely overrides parent's implementation
 		love.graphics.draw(self.image, self.x, self.y, self.heading + rotate90, self.scale.x, self.scale.y, self.spec.offX, self.spec.offY)
 	end
+	-- Draw the debug thing
 	self:drawDebug()
 end
 
 
---[[
-	Rerturns the (distance^2) to a coordinate (x,y)
-
-	@param x The x coordinate
-	@param y The y coordinate
-
-	@returns The distance squared
-]]
+---------------------------------------------------------------
+-- Rerturns the (distance^2) to a coordinate (x,y)
+--
+-- @number x The x coordinate
+-- @number y The y coordinate
+--
+-- @return The distance squared
+---------------------------------------------------------------
 function MovingObject:distSqToPosition(x,y)
 	-- Get a vector from us to the target (distVector)
 	local distX = x - self.x
@@ -90,11 +126,11 @@ function MovingObject:distSqToPosition(x,y)
 	return squaredDistance
 end
 
---[[ 
-	Checks if we are inside the given circle ({x,y,r})
-
-	@returns true if collision
-]]
+--------------------------------------------------------------- 
+-- Checks if we are inside the given circle ({x,y,r})
+--
+-- @return true if collision
+---------------------------------------------------------------
 function MovingObject:isInsideCircle(x,y,radius)
 	-- ;) If a distance vector betweer our position and the circle is smaller than the radius, we are inside
 	local distSq = self:distSqToPosition(x, y)
@@ -108,7 +144,5 @@ function MovingObject:isInsideCircle(x,y,radius)
 	    return false
 	end
 end
-
-
 
 return MovingObject
