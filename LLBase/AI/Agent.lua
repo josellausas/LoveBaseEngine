@@ -1,11 +1,9 @@
---[[ 
-		Agent.lua
-		=========
-
-		About
-		-----
-		Abstracts an inteligent agent for AI 
-]]
+------------------------------------------------------
+-- Abstracts an inteligent agent for AI 
+--
+-- @author jose@zunware.com
+-- @copyright Zunware
+------------------------------------------------------
 local class 		= require "middleclass"							-- OOP
 local MovingObject  = require("LLBase.Renderer.MovingObject")		-- Base moving object
 local AIBehaviors   = require("LLBase.AI.Behaviors")				-- State Machines
@@ -17,9 +15,12 @@ local IntelligentObject = class('IntelligentObject', MovingObject) 	--The Object
 local renderDebug   = false
 local debugTextSize = 5
 
---[[ 
-	Cretaes a new instance of an intelligent object.
-]]
+------------------------------------------------------
+-- Cretaes a new instance of an intelligent object.
+--
+-- @param renderImage **(Image)** The image avatar
+-- @param target **(MovingObject)** The target object
+------------------------------------------------------
 function IntelligentObject:initialize(renderImage, target)
 	MovingObject.initialize(self, renderImage) -- Parent's constructor
 
@@ -28,6 +29,11 @@ function IntelligentObject:initialize(renderImage, target)
 	self.currentBehavior = AIBehaviors.noBehavior
 end
 
+------------------------------------------------------
+-- Changes the state machine
+--
+-- @param state **(State)** The state to switch to
+------------------------------------------------------
 function IntelligentObject:changeState(state)
 	-- Perform a change of state
 	local oldBehavior = self.currentBehavior.onExit(self) -- Exit last behavior
@@ -35,19 +41,31 @@ function IntelligentObject:changeState(state)
 	self.currentBehavior = state 
 end
 
+------------------------------------------------------
+-- The chill behavior
+------------------------------------------------------
 function IntelligentObject:chill()
 	self.target = nil
 	self:changeState(AIBehaviors.noBehavior)
 end
 
---[[ Change to seek behavior. Follow the target ]]
+------------------------------------------------------
+-- Change to seek behavior. Follow the target 
+--
+-- @param target **(MovingObject)** The target
+------------------------------------------------------
 function IntelligentObject:seek(target)
 	-- Seek the target!
 	self.target = target
 	-- Do the change state
 	self:changeState(AIBehaviors.seekBehavior)
 end
-	
+
+------------------------------------------------------
+-- Look at the given coordinate
+--
+-- @param coord **({x,y})** A table with `x` and `y` properties
+------------------------------------------------------
 function IntelligentObject:lookAt(coord)
 	-- Get the targets position.
 	local targetX = coord.x
@@ -72,12 +90,21 @@ function IntelligentObject:lookAt(coord)
 	self:setHeading(fwd.x, fwd.y)
 end
 
+------------------------------------------------------
+-- Heartbeat update
+--
+-- @number dt Time slice
+------------------------------------------------------
 function IntelligentObject:update(dt)
 	MovingObject.update(self, dt)
 	self.currentBehavior.onUpdate(self,dt)
 end
 
---[[ Returns the distance squared to given target ]]
+------------------------------------------------------
+-- Returns the distance squared to given target 
+--
+-- @return **(number)** The distance squared to target
+------------------------------------------------------
 function IntelligentObject:distSqToTarget()
 	if not (self.target == nil) then
 		-- Get a vector from us to the target (distVector)
@@ -91,6 +118,11 @@ function IntelligentObject:distSqToTarget()
 	end
 end
 
+
+
+------------------------------------------------------
+-- Draw function
+------------------------------------------------------
 function IntelligentObject:draw()
 	MovingObject.draw(self)
 

@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>BaseEngine</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/Game.html">Game</a></li>
+  <li><strong>LLBase.AI.Agent</strong></li>
+  <li><a href="../modules/LLBase.CollisionManager.html">LLBase.CollisionManager</a></li>
+  <li><a href="../modules/LLBase.Game.Enemy.html">LLBase.Game.Enemy</a></li>
+  <li><a href="../modules/Player.html">Player</a></li>
+  <li><a href="../modules/MovingObject.html">MovingObject</a></li>
+  <li><a href="../modules/PhysicalObject.html">PhysicalObject</a></li>
+  <li><a href="../modules/RenderObject.html">RenderObject</a></li>
+  <li><a href="../modules/main.html">main</a></li>
+  <li><a href="../modules/tests.html">tests</a></li>
+  <li><a href="../modules/thread01.html">thread01</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>LLBase.AI.Agent</code></h1>
+<p>Abstracts an inteligent agent for AI</p>
+<p>
+
+</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: Zunware</li>
+        <li><strong>Author</strong>: jose@zunware.com</li>
+    </ul>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#IntelligentObject:initialize">IntelligentObject:initialize (renderImage, target)</a></td>
+	<td class="summary">Cretaes a new instance of an intelligent object.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#IntelligentObject:changeState">IntelligentObject:changeState (state)</a></td>
+	<td class="summary">Changes the state machine</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#IntelligentObject:chill">IntelligentObject:chill ()</a></td>
+	<td class="summary">The chill behavior</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#IntelligentObject:seek">IntelligentObject:seek (target)</a></td>
+	<td class="summary">Change to seek behavior.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#IntelligentObject:lookAt">IntelligentObject:lookAt (coord)</a></td>
+	<td class="summary">Look at the given coordinate</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#IntelligentObject:update">IntelligentObject:update (dt)</a></td>
+	<td class="summary">Heartbeat update</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#IntelligentObject:distSqToTarget">IntelligentObject:distSqToTarget ()</a></td>
+	<td class="summary">Returns the distance squared to given target</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#IntelligentObject:draw">IntelligentObject:draw ()</a></td>
+	<td class="summary">Draw function</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "IntelligentObject:initialize"></a>
+    <strong>IntelligentObject:initialize (renderImage, target)</strong>
+    </dt>
+    <dd>
+    Cretaes a new instance of an intelligent object.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">renderImage</span>
+         <strong>(Image)</strong> The image avatar
+        </li>
+        <li><span class="parameter">target</span>
+         <strong>(MovingObject)</strong> The target object
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "IntelligentObject:changeState"></a>
+    <strong>IntelligentObject:changeState (state)</strong>
+    </dt>
+    <dd>
+    Changes the state machine
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">state</span>
+         <strong>(State)</strong> The state to switch to
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "IntelligentObject:chill"></a>
+    <strong>IntelligentObject:chill ()</strong>
+    </dt>
+    <dd>
+    The chill behavior
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "IntelligentObject:seek"></a>
+    <strong>IntelligentObject:seek (target)</strong>
+    </dt>
+    <dd>
+    Change to seek behavior.  Follow the target
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">target</span>
+         <strong>(MovingObject)</strong> The target
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "IntelligentObject:lookAt"></a>
+    <strong>IntelligentObject:lookAt (coord)</strong>
+    </dt>
+    <dd>
+    Look at the given coordinate
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">coord</span>
+         <strong>({x,y})</strong> A table with <code>x</code> and <code>y</code> properties
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "IntelligentObject:update"></a>
+    <strong>IntelligentObject:update (dt)</strong>
+    </dt>
+    <dd>
+    Heartbeat update
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dt</span>
+            <span class="types"><span class="type">number</span></span>
+         Time slice
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "IntelligentObject:distSqToTarget"></a>
+    <strong>IntelligentObject:distSqToTarget ()</strong>
+    </dt>
+    <dd>
+    Returns the distance squared to given target
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        <strong>(number)</strong> The distance squared to target
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "IntelligentObject:draw"></a>
+    <strong>IntelligentObject:draw ()</strong>
+    </dt>
+    <dd>
+    Draw function
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2016-07-30 03:55:22 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
