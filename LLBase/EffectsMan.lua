@@ -1,4 +1,6 @@
---[[ Effects manager ]]
+---------------------------------
+-- Effects manager
+---------------------------------
 local FX = {}
 
 FX.psystem = nil

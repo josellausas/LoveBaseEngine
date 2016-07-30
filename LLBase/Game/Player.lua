@@ -59,6 +59,7 @@ function Player:respawn(x,y)
 	-- TODO: Do some animation
 end
 
+
 function Player:hitBy(dmg)
 	self.hp = self.hp - dmg
 

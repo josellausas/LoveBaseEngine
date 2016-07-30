@@ -1,6 +1,14 @@
---[[Behavior state machines]]
+----------------------------------------------------
+-- State machine behaviors
+--
+-- @author jose@josellausas.com
+-- @module Behaviors
+----------------------------------------------------
 
+--- No behavior
+-- @table noBehavior
 local noBehavior = {}
+
 function noBehavior:onEnter()
 	print("starting to chill")
 	self.speed = 0
@@ -14,7 +22,8 @@ function noBehavior:onExit()
 	print("No longer chilling")
 end
 
-
+--- Seeks a target
+-- @table seekBehavior
 local seekBehavior = {
 	onEnter = function(agent)
 		print("Agent is now seeking target at: ")
@@ -34,6 +43,8 @@ local seekBehavior = {
 }
 
 
+--- Wander around
+-- @table wanderBehavior
 local wanderBehavior = {
 	onEnter = function(agent)
 	end,
@@ -52,9 +63,11 @@ local wanderBehavior = {
 }
 
 
-local pack = {
-	noBehavior = noBehavior,
-	seekBehavior = seekBehavior
+--- Behaviors
+-- @table Behaviors
+local Behaviors = {
+	noBehavior = noBehavior, -- No behavior at all
+	seekBehavior = seekBehavior -- Seek behavior
 }
 
-return pack
+return Behaviors

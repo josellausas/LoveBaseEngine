@@ -41,13 +41,13 @@
   <li><a href="../modules/Game.html">Game</a></li>
   <li><a href="../modules/LLBase.AI.Agent.html">LLBase.AI.Agent</a></li>
   <li><a href="../modules/Behaviors.html">Behaviors</a></li>
-  <li><a href="../modules/Turret.html">Turret</a></li>
+  <li><strong>Turret</strong></li>
   <li><a href="../modules/LLBase.CollisionManager.html">LLBase.CollisionManager</a></li>
   <li><a href="../modules/LLBase.Game.Enemy.html">LLBase.Game.Enemy</a></li>
   <li><a href="../modules/Player.html">Player</a></li>
   <li><a href="../modules/MovingObject.html">MovingObject</a></li>
   <li><a href="../modules/PhysicalObject.html">PhysicalObject</a></li>
-  <li><strong>RenderObject</strong></li>
+  <li><a href="../modules/RenderObject.html">RenderObject</a></li>
   <li><a href="../modules/levels.level01.html">levels.level01</a></li>
   <li><a href="../modules/levels.level02.html">levels.level02</a></li>
   <li><a href="../modules/main.html">main</a></li>
@@ -59,34 +59,22 @@
 
 <div id="content">
 
-<h1>Module <code>RenderObject</code></h1>
-<p>A basic render object for Love</p>
+<h1>Module <code>Turret</code></h1>
+<p>A defensive Turret</p>
 <p>
 
 </p>
-    <h3>Info:</h3>
-    <ul>
-        <li><strong>Author</strong>: jose@zunware.com</li>
-    </ul>
 
 
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#drawDebug">drawDebug ()</a></td>
-	<td class="summary">Draws the object in debug mode</td>
+	<td class="name" nowrap><a href="#initialize">initialize (image)</a></td>
+	<td class="summary">Initialize the thing</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#initialize">initialize (renderImage)</a></td>
-	<td class="summary">Initializes a RenderObject</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#draw">draw ()</a></td>
-	<td class="summary">The render function</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#update">update (dt)</a></td>
-	<td class="summary">Heartbeat function</td>
+	<td class="name" nowrap><a href="#attack">attack (target)</a></td>
+	<td class="summary">Attack the target</td>
 	</tr>
 </table>
 
@@ -98,31 +86,17 @@
 
     <dl class="function">
     <dt>
-    <a name = "drawDebug"></a>
-    <strong>drawDebug ()</strong>
-    </dt>
-    <dd>
-    Draws the object in debug mode
-
-
-
-
-
-
-
-</dd>
-    <dt>
     <a name = "initialize"></a>
-    <strong>initialize (renderImage)</strong>
+    <strong>initialize (image)</strong>
     </dt>
     <dd>
-    Initializes a RenderObject
+    Initialize the thing
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">renderImage</span>
-         <strong>(Image)</strong> The image avatar
+        <li><span class="parameter">image</span>
+         The image
         </li>
     </ul>
 
@@ -132,32 +106,17 @@
 
 </dd>
     <dt>
-    <a name = "draw"></a>
-    <strong>draw ()</strong>
+    <a name = "attack"></a>
+    <strong>attack (target)</strong>
     </dt>
     <dd>
-    The render function
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "update"></a>
-    <strong>update (dt)</strong>
-    </dt>
-    <dd>
-    Heartbeat function
+    Attack the target
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">dt</span>
-            <span class="types"><span class="type">number</span></span>
-         Delta Time slice
+        <li><span class="parameter">target</span>
+         The thing to attack
         </li>
     </ul>
 
