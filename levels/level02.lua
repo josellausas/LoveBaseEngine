@@ -1,5 +1,7 @@
--- [[ Level 2 ]]
-
+------------------------------------------------------
+-- Level 02
+-- The 2nd level for the game
+------------------------------------------------------
 local level02 = {
 	name = "Base level 02",
 	levelType = "LEVEL",

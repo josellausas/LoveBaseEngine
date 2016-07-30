@@ -1,19 +1,15 @@
---[[!* 
- @file 		Game.lua
- @author 	jose@josellausas
- @see 		levels/level01.lua
- @see 		LLBase/ObjectFactory.lua
- @abstract
-
-About
------
-This is the main file for the Game. It centrilizes the control for behavior
-
-Notes
------
-When the game loads, it scans the `/levels` directory for `*.lua` files and loads
-each one as a level. 
-]]
+-----------------------------------------------------------
+-- The game module
+-- This is the main file for the Game. It centrilizes the control for behavior
+--
+-- Notes
+-- -----
+-- When the game loads, it scans the `/levels` directory for `*.lua` files and loads each one as a level. 
+--
+-- @author 	jose@josellausas
+-- @see levels/level01.lua
+-- @see LLBase/ObjectFactory.lua
+-----------------------------------------------------------
 local class 			= require('middleclass')
 local Camera 			= require("LLBase.LLCamera")			--- > The user's view 
 local ObjectFactory 	= require("LLBase.ObjectFactory")		--- > Object Manager
@@ -27,19 +23,20 @@ local Player 			= require 'LLBase.Game.Player'			--- > The Player Object
 local cameraSpeed 	= 800										---> Controlls how fast the camera can move
 local camScale 		= Camera.scaleX								---> Scales the camera
 local textToPrint = ""
---[[!*
-	The game itself. Holds all
-]]
+
+----------------------
+-- The game table
+-- @table game
 local game = 
 {
-	showDebug 			 = true,
-	showUI 				 = true,
-	player 				 = nil,
-	team 				 = nil,
-	enemies 			 = nil,
-	turrets 			 = nil,
-	currentLevelSettings = nil,
-	loadedImages 		 = nil,
+	showDebug 			 = true, -- Debug mode
+	showUI 				 = true, -- Show the User interface
+	player 				 = nil,	 -- The player
+	team 				 = nil,	 -- The teams
+	enemies 			 = nil,	 -- The enemies
+	turrets 			 = nil,  -- The turrets
+	currentLevelSettings = nil,  -- The current level settings
+	loadedImages 		 = nil,  -- Loaded images table
 }
 
 -- Some flags. Used for building unique tags when Units are created
@@ -47,6 +44,7 @@ local _enemyCount 	= 0
 local _turretCount 	= 0
 local _imageCount 	= 0
 
+-- Set some things
 game.showDebug  = true
 game.showUI 	= true
 game.player 	= nil
@@ -59,31 +57,31 @@ game.loadedImages = {
 	ship = nil,
 }
 	
---[[!*
-	The Scree's Width
-
-	@return The Height number
-]]
+---------------------------------------------------
+-- The Scree's Width
+--
+-- @return The Height number
+---------------------------------------------------
 local function getWidth()
 	return love.graphics.getWidth()
 end
 
---[[!*
-	The Screen's Height
-
-	@return The Height number
-]]
+---------------------------------------------------
+-- The Screen's Height
+--
+-- @return The Height number
+---------------------------------------------------
 local function getHeight()
 	return love.graphics.getHeight()
 end
 
 
---[[!* 
-	Loads an image to the loaded images dictionary 
-	
-	@param	name	The image string identifier
-	@param	path	The Images Path
-]]
+---------------------------------------------------
+-- Loads an image to the loaded images dictionary 
+--
+-- @param name The image string identifier
+-- @param path The Images Path
+---------------------------------------------------
 function game:loadImage(name, path)
 	if not (self.loadedImages[name] == nil) then
 		print("WARNING: RELOADING AN IMAGE!!!")
@@ -96,11 +94,11 @@ function game:loadImage(name, path)
 end
 
 
---[[!*
-	Loads a gameLevel
-
-	@param levelName The levelname from the levels folder
-]]
+---------------------------------------------------
+-- Loads a gameLevel
+--
+-- @param levelName The levelname from the levels folder
+---------------------------------------------------
 function game:loadLevel(levelName)
 
 	-- This is good to do when you need randomness
@@ -187,11 +185,11 @@ end
 
 
 
---[[!*
-	Centers the camera on a coordinate
-
-	@param target {x,y}
-]]
+---------------------------------------------------
+-- Centers the camera on a coordinate
+--
+-- @param target {x,y}
+---------------------------------------------------
 function game:centerCamera(target)
 	Camera:setPosition( target.x - (getWidth() * 0.5 * camScale), 
 						target.y - (getHeight() * 0.5 * camScale))
@@ -206,14 +204,14 @@ function game:centerCamPlayer()
 end
 
 
---[[!*
-	Creates a new Artifical Inteligence
-
-	@param radius The radius
-	@param speedRange The range of speed it can have
-	@param posX X position
-	@param posY Y position
-]]
+---------------------------------------------------
+-- Creates a new Artifical Inteligence
+--
+-- @param radius The radius
+-- @param speedRange The range of speed it can have
+-- @param posX X position
+-- @param posY Y position
+---------------------------------------------------
 function game:createAI(radius, speedRange, posX, posY)
 	-- Use the object factory
 	local enemyAI = ObjectFactory:newAI(self.loadedImages["ship"], posX, posY, nil)
@@ -234,20 +232,20 @@ function game:createAI(radius, speedRange, posX, posY)
 	enemyAI:seek(self.player)
 end
 
---[[!*
-	Loads the User's Settings
-	@return A table
-]]
+---------------------------------------------------
+-- Loads the User's Settings
+-- @return **({})** A table
+---------------------------------------------------
 local function loadUserSettings()
 	-- TODO: Implement this
 	return {currentLevel = "level01"}
 end
 
---[[!*
-	Initializes the game
-
-	@param settings {}
-]]
+---------------------------------------------------
+-- Initializes the game
+--
+-- @param **({})** settings {}
+---------------------------------------------------
 function game:init(settings)
 	-- Fail if we have nil settings 
 	if settings == nil then 
@@ -299,11 +297,11 @@ function game:init(settings)
 	self:loadLevel(userSettings.currentLevel)
 end
 
---[[!*
-	Updates the Camera
-
-	@param dt Time delta
-]]
+---------------------------------------------------
+-- Updates the Camera
+--
+-- @number dt Time delta
+---------------------------------------------------
 local function getCameraDeltas(dt)
 	local moveAmount = dt * cameraSpeed
 	local deltaX = 0
@@ -322,12 +320,11 @@ local function getCameraDeltas(dt)
 end
 
 
---[[!*
-	Updates the Game
-
-	@param	dt	Delta Time
-]]
-
+---------------------------------------------------
+-- Updates the Game
+--
+-- @number dt Delta Time
+---------------------------------------------------
 function game:update(dt)
 
 	ColMan:update(dt, self.player)
@@ -367,9 +364,9 @@ function game:update(dt)
 	end
 end 
 
---[[!*
-	Draws the Game
-]]
+---------------------------------------------------
+-- Draws the Game
+---------------------------------------------------
 function game:draw()
 	-- All a matter of perspective ;)
 	Camera:set()
@@ -388,9 +385,9 @@ function game:draw()
 
 end
 
---[[!*
-	Zooms out the camera
-]]
+---------------------------------------------------
+-- Zooms out the camera
+---------------------------------------------------
 function game:zoomOut()
 	Camera:move(-getWidth()*0.5, -getHeight()*0.5)
 	camScale = camScale + 1
@@ -398,9 +395,9 @@ function game:zoomOut()
 end
 
 
---[[!*
-	Zooms in the camera
-]]
+---------------------------------------------------
+-- Zooms in the camera
+---------------------------------------------------
 function game:zoomIn()
 	camScale = camScale - 1
 	Camera:setScale(camScale,camScale)

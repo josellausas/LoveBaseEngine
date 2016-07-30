@@ -30,6 +30,11 @@
   <li><a href="../index.html">Index</a></li>
 </ul>
 
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+</ul>
 
 
 <h2>Modules</h2>
@@ -42,6 +47,8 @@
   <li><a href="../modules/MovingObject.html">MovingObject</a></li>
   <li><a href="../modules/PhysicalObject.html">PhysicalObject</a></li>
   <li><a href="../modules/RenderObject.html">RenderObject</a></li>
+  <li><a href="../modules/levels.level01.html">levels.level01</a></li>
+  <li><a href="../modules/levels.level02.html">levels.level02</a></li>
   <li><a href="../modules/main.html">main</a></li>
   <li><a href="../modules/tests.html">tests</a></li>
   <li><a href="../modules/thread01.html">thread01</a></li>
@@ -52,28 +59,300 @@
 <div id="content">
 
 <h1>Module <code>Game</code></h1>
-<p>
-<blockquote>
-    <p>The user's view</p>
-</blockquote>
-</p>
-<p>
+<p>The game module
+ This is the main file for the Game.</p>
+<p> It centrilizes the control for behavior</p>
 
-</p>
+<h2> Notes</h2>
+<p> When the game loads, it scans the <code>/levels</code> directory for <code>*.lua</code> files and loads each one as a level. </p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Author</strong>: jose@josellausas</li>
+    </ul>
 
 
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#game:loadImage">game:loadImage (name, path)</a></td>
+	<td class="summary">Loads an image to the loaded images dictionary</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#game:loadLevel">game:loadLevel (levelName)</a></td>
+	<td class="summary">Loads a gameLevel</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#game:centerCamera">game:centerCamera (target)</a></td>
+	<td class="summary">Centers the camera on a coordinate</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#game:createAI">game:createAI (radius, speedRange, posX, posY)</a></td>
+	<td class="summary">Creates a new Artifical Inteligence</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#game:init">game:init (settings)</a></td>
+	<td class="summary">Initializes the game</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#game:update">game:update (dt)</a></td>
+	<td class="summary">Updates the Game</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#game:draw">game:draw ()</a></td>
+	<td class="summary">Draws the Game</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#game:zoomOut">game:zoomOut ()</a></td>
+	<td class="summary">Zooms out the camera</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#game:zoomIn">game:zoomIn ()</a></td>
+	<td class="summary">Zooms in the camera</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#game">game</a></td>
+	<td class="summary">The game table</td>
+	</tr>
+</table>
 
 <br/>
 <br/>
 
 
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "game:loadImage"></a>
+    <strong>game:loadImage (name, path)</strong>
+    </dt>
+    <dd>
+    Loads an image to the loaded images dictionary
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         The image string identifier
+        </li>
+        <li><span class="parameter">path</span>
+         The Images Path
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "game:loadLevel"></a>
+    <strong>game:loadLevel (levelName)</strong>
+    </dt>
+    <dd>
+    Loads a gameLevel
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">levelName</span>
+         The levelname from the levels folder
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "game:centerCamera"></a>
+    <strong>game:centerCamera (target)</strong>
+    </dt>
+    <dd>
+    Centers the camera on a coordinate
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">target</span>
+         {x,y}
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "game:createAI"></a>
+    <strong>game:createAI (radius, speedRange, posX, posY)</strong>
+    </dt>
+    <dd>
+    Creates a new Artifical Inteligence
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">radius</span>
+         The radius
+        </li>
+        <li><span class="parameter">speedRange</span>
+         The range of speed it can have
+        </li>
+        <li><span class="parameter">posX</span>
+         X position
+        </li>
+        <li><span class="parameter">posY</span>
+         Y position
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "game:init"></a>
+    <strong>game:init (settings)</strong>
+    </dt>
+    <dd>
+    Initializes the game
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">settings</span>
+         {}
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "game:update"></a>
+    <strong>game:update (dt)</strong>
+    </dt>
+    <dd>
+    Updates the Game
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dt</span>
+            <span class="types"><span class="type">number</span></span>
+         Delta Time
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "game:draw"></a>
+    <strong>game:draw ()</strong>
+    </dt>
+    <dd>
+    Draws the Game
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "game:zoomOut"></a>
+    <strong>game:zoomOut ()</strong>
+    </dt>
+    <dd>
+    Zooms out the camera
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "game:zoomIn"></a>
+    <strong>game:zoomIn ()</strong>
+    </dt>
+    <dd>
+    Zooms in the camera
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "game"></a>
+    <strong>game</strong>
+    </dt>
+    <dd>
+    The game table
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">showDebug</span>
+        Debug mode
+        </li>
+        <li><span class="parameter">showUI</span>
+        Show the User interface
+        </li>
+        <li><span class="parameter">player</span>
+        The player
+        </li>
+        <li><span class="parameter">team</span>
+        The teams
+        </li>
+        <li><span class="parameter">enemies</span>
+        The enemies
+        </li>
+        <li><span class="parameter">turrets</span>
+        The turrets
+        </li>
+        <li><span class="parameter">currentLevelSettings</span>
+        The current level settings
+        </li>
+        <li><span class="parameter">loadedImages</span>
+        Loaded images table
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
 
 
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-07-30 03:55:22 </i>
+<i style="float:right;">Last updated 2016-07-30 04:12:44 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
