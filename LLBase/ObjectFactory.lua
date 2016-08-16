@@ -11,8 +11,8 @@
 local AIBehaviors 		= require("LLBase.AI.Behaviors")
 local MovingObject 		= require("LLBase.Renderer.MovingObject")
 local IntelligentObject = require("LLBase.AI.Agent")
-local Turret 			=  require("LLBase.AI.Turret")
-local Player = require("LLBase.Game.Player")
+local Turret 			= require("LLBase.AI.Turret")
+local Player 			= require("LLBase.Game.Player")
 
 local playerCount = 0
 
