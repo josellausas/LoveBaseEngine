@@ -5,7 +5,7 @@
 -- @module PhysicalObject
 ---------------------------------------------------------------
 local class 		= require 'middleclass'
-local MovingObject 	= require 'LLBase.Renderer.RenderObject'
+local MovingObject 	= require 'engine.objects.abstract.RenderObject'
 local PhysicalObject = class('PhysicalObject', MovingObject)
 
 ---------------------------------------------------------------

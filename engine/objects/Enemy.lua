@@ -4,7 +4,7 @@
 -- @author jose@josellausas.com
 ---------------------------------------------------
 local class = require 'middleclass'
-local AI 	= require 'LLBase.AI.Agent'
+local AI 	= require 'engine.objects.Agent'
 
 local Enemy = class('Enemy', AI)
 
