@@ -12,7 +12,6 @@ require("mobdebug").start()
 
 local busted = require("busted")
 
-
 -------------------------------------------------------
 -- The windows width
 --
@@ -35,15 +34,15 @@ end
 -- Loads the game
 -------------------------------------------------------
 function love.load()
-	
+
 	-- Grab the max size of the screen
 	local options = {
-		fullscreen = false, 
-		vsync = false, 
-		msaa = 0, 
-		resizable = true, 
-		borderless=false, 
-		centered = true, 
+		fullscreen = false,
+		vsync = false,
+		msaa = 0,
+		resizable = true,
+		borderless=false,
+		centered = true,
 		display = 1
 	}
 
@@ -51,7 +50,7 @@ function love.load()
 	love.window.setMode(0, 0, options)
 	love.graphics.setNewFont(12)
 	love.graphics.setBackgroundColor(120,120,120)
-	
+
 	-- Initializes the Llau Game
 	LlauGame:init(gameSettings)
 end
@@ -84,7 +83,7 @@ end
 -- @param button **(Button)** the button pressed
 ----------------------------------------------------
 function love.mousepressed(x,y,button)
-	
+
 end
 
 

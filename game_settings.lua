@@ -1,5 +1,4 @@
---[[ 
- 	This file determines the Game optios, level names, etc
+--[[ This file determines the Game optios, level names, etc
 ]]
 local settings = {
 	gameTitle = "Base Game Engine",

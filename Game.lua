@@ -4,14 +4,14 @@
 --
 -- Notes
 -- -----
--- When the game loads, it scans the `/levels` directory for `*.lua` files and loads each one as a level. 
+-- When the game loads, it scans the `/levels` directory for `*.lua` files and loads each one as a level.
 --
 -- @author 	jose@josellausas
 -- @see levels/level01.lua
 -- @see LLBase/ObjectFactory.lua
 -----------------------------------------------------------
 local class 			= require('middleclass')
-local Camera 			= require("LLBase.LLCamera")			--- > The user's view 
+local Camera 			= require("LLBase.LLCamera")			--- > The user's view
 local ObjectFactory 	= require("LLBase.ObjectFactory")		--- > Object Manager
 local UIMan 			= require("LLBase.UIManager")			--- > User Interface Manager 		(en desarrollo)
 local ColMan 			= require("LLBase.CollisionManager")	--- > The Collision Manager 		(en desarrollo)
@@ -27,8 +27,7 @@ local textToPrint = ""
 ----------------------
 -- The game table
 -- @table game
-local game = 
-{
+local game = {
 	showDebug 			 = true, -- Debug mode
 	showUI 				 = true, -- Show the User interface
 	player 				 = nil,	 -- The player
@@ -56,7 +55,7 @@ game.loadedImages = {
 	playerTile = nil,
 	ship = nil,
 }
-	
+
 ---------------------------------------------------
 -- The Scree's Width
 --
@@ -77,7 +76,7 @@ end
 
 
 ---------------------------------------------------
--- Loads an image to the loaded images dictionary 
+-- Loads an image to the loaded images dictionary
 --
 -- @param name The image string identifier
 -- @param path The Images Path
@@ -134,8 +133,12 @@ function game:loadLevel(levelName)
 	--==========
 	-- CUATRO
 	print("Creating Player")
-		self.player = ObjectFactory:newPlayer(self.loadedImages["player"],levelSettings.mapWidth*0.5,  levelSettings.mapHeight*0.5)
+		self.player = ObjectFactory:newPlayer(
+			self.loadedImages["player"],levelSettings.mapWidth*0.5,
+			levelSettings.mapHeight*0.5
+		)
 		ColMan:registerObject(self.player)
+
 	print("Done creating Player")
 
 	--==========
@@ -146,7 +149,7 @@ function game:loadLevel(levelName)
 		local speedRange 	= levelSettings.targetRadius
 
 		-- Loop and randomize between our space of posibilities
-		for i=1,levelSettings.numAI do
+		for i = 1, levelSettings.numAI do
 			local posX = math.random(1, levelSettings.mapWidth)
 			local posY = math.random(1, levelSettings.mapHeight)
 			-- Creativity by Creation
@@ -154,14 +157,14 @@ function game:loadLevel(levelName)
 		end
 
 		-- Creating turrets
-		for i=1, levelSettings.numTurrets do
+		for i = 1, levelSettings.numTurrets do
 			-- A random position
 			local posX = math.random(1, levelSettings.mapWidth)
 			local posY = math.random(1, levelSettings.mapHeight)
 
 			-- Create a turret
 			local turret = ObjectFactory:newTurret(self.loadedImages["turret"], posX, posY)
-			
+
 			-- Keep track of the things
 			_turretCount = _turretCount + 1
 
@@ -191,7 +194,7 @@ end
 -- @param target {x,y}
 ---------------------------------------------------
 function game:centerCamera(target)
-	Camera:setPosition( target.x - (getWidth() * 0.5 * camScale), 
+	Camera:setPosition( target.x - (getWidth() * 0.5 * camScale),
 						target.y - (getHeight() * 0.5 * camScale))
 end
 
@@ -247,10 +250,10 @@ end
 -- @param **({})** settings {}
 ---------------------------------------------------
 function game:init(settings)
-	-- Fail if we have nil settings 
-	if settings == nil then 
-		print("Failed to load settings") 
-		return nil 
+	-- Fail if we have nil settings
+	if settings == nil then
+		print("Failed to load settings")
+		return nil
 	end
 
 	-- Start to launch the game
@@ -344,7 +347,7 @@ function game:update(dt)
 
 	local p1Circle = self.player:getCollisionCircle()
 
-	for k,v in pairs(self.enemies) do	
+	for k,v in pairs(self.enemies) do
 		-- Check for collision with player
 		local collisionDetected = v:isInsideCircle(p1Circle.x, p1Circle.y, p1Circle.r)
 		if(collisionDetected == true) then
@@ -362,7 +365,7 @@ function game:update(dt)
 			end
 		end
 	end
-end 
+end
 
 ---------------------------------------------------
 -- Draws the Game
