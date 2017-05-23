@@ -4,9 +4,9 @@
 -- @module Turret
 ---------------------------------
 local class 	   = require 'middleclass'
-local MovingObject = require("LLBase.Renderer.MovingObject")	-- Base moving object
-local AIBehaviors  = require("LLBase.AI.Behaviors")				-- State Machines
-local AI 		   = require "LLBase.AI.Agent"
+local MovingObject = require("engine.objects.abstract.MovingObject")	-- Base moving object
+local AIBehaviors  = require("engine.ai.BehaviorFunctions")				-- State Machines
+local AI 		   = require("engine.objects.Agent")
 
 local Turret = class('Turret', AI)
 
@@ -22,11 +22,11 @@ end
 
 ---------------------------------
 -- Attack the target
--- 
+--
 -- @param target The thing to attack
 ---------------------------------
 function Turret:attack(target)
-	AI.seek(self, target)			
+	AI.seek(self, target)
 	-- TODO: shoot behavior here
 end
 

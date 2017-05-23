@@ -28,18 +28,18 @@ end
 ---------------------------------------------------------------
 function RenderObject:initialize(renderImage)
 	-- Catch bad parameters
-	if(renderImage == nil) then 
-		print ("Cannot build with an empty image") 
-		return nil 
+	if(renderImage == nil) then
+		print ("Cannot build with an empty image")
+		return nil
 	end
-	
+
 	-- The member variables
-	self.x 			= 100				-- X position 
+	self.x 			= 100				-- X position
 	self.y 			= 100				-- Y position
 	self.lifeTime 	= 0					-- # of seconds it's been alive
 	self.image 	= renderImage			-- The image rendered
-	
-	-- Debug flag	
+
+	-- Debug flag
 	self.debug = renderDebug
 	self.renderFlag = true
 end
@@ -57,7 +57,7 @@ end
 
 ---------------------------------------------------------------
 -- Heartbeat function
--- 
+--
 -- @number dt Delta Time slice
 ---------------------------------------------------------------
 function RenderObject:update(dt)

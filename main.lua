@@ -6,7 +6,7 @@
 --------------------------------
 local lovebird 		= require("lovebird")
 local gameSettings  = require("game_settings") -- The settings used for the game
-local LlauGame 	    = require("Game")
+local LlauGame 	    = require("engine.Game")
 
 require("mobdebug").start()
 

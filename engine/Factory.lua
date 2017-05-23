@@ -1,26 +1,24 @@
 --[[
- 
- ObjectFactory.lua 
+ ObjectFactory.lua
  =================
 
  Creates the game objects and gives them properties.
  The main interface. Is in charge of creating and managing all objects. Needs to be updated and drawn.
 ]]
 
-
-local AIBehaviors 		= require("LLBase.AI.Behaviors")
-local MovingObject 		= require("LLBase.Renderer.MovingObject")
-local IntelligentObject = require("LLBase.AI.Agent")
-local Turret 			= require("LLBase.AI.Turret")
-local Player 			= require("LLBase.Game.Player")
+local AIBehaviors 		= require("engine.ai.BehaviorFunctions")
+local MovingObject 		= require("engine.objects.abstract.MovingObject")
+local IntelligentObject = require("engine.objects.Agent")
+local Turret 			= require("engine.objects.Turret")
+local Player 			= require("engine.objects.Player")
 
 local playerCount = 0
 
 
-local ObjectFactory = 
+local ObjectFactory =
 {
 	--Stores all the objects created with this Factory. This can be used for memory clean ups.
-	allObjects = {}, 	
+	allObjects = {},
 
 	--Creates a new Artificial Intelligence actor that has a target.
 	newAI = function(self, img, posX, posY, target)
@@ -79,14 +77,14 @@ local ObjectFactory =
 
 	--[[ Updates all RenderObjects ]]
 	update = function(self, dt)
-		for k,v in pairs(self.allObjects) do
+		for _,v in pairs(self.allObjects) do
 			v:update(dt)
 		end
 	end,
 
 	--[[ Draws all RenderObjects ]]
 	draw = function(self)
-		for k,v in pairs(self.allObjects) do
+		for _,v in pairs(self.allObjects) do
 			v:draw()
 		end
 	end,

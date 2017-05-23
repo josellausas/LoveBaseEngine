@@ -11,18 +11,18 @@
 -- @see LLBase/ObjectFactory.lua
 -----------------------------------------------------------
 local class 			= require('middleclass')
-local Camera 			= require("LLBase.LLCamera")			--- > The user's view
-local ObjectFactory 	= require("LLBase.ObjectFactory")		--- > Object Manager
-local UIMan 			= require("LLBase.UIManager")			--- > User Interface Manager 		(en desarrollo)
-local ColMan 			= require("LLBase.CollisionManager")	--- > The Collision Manager 		(en desarrollo)
-local EffectsMan		= require("LLBase.EffectsMan")			--- > The SFX Manager 				(en desarrollo)
-local Player 			= require 'LLBase.Game.Player'			--- > The Player Object
+local Camera 			= require('engine.Camera')
+local ObjectFactory 	= require('engine.Factory')
+local UIMan 			= require('engine.UI')
+local ColMan 			= require('engine.Physics')
+local EffectsMan		= require('engine.SFX')
+local Player 			= require('engine.objects.Player')
 
 
 -- Setup the camera defaults
 local cameraSpeed 	= 800										---> Controlls how fast the camera can move
 local camScale 		= Camera.scaleX								---> Scales the camera
-local textToPrint = ""
+local textToPrint   = ""
 
 ----------------------
 -- The game table

@@ -5,11 +5,11 @@
 -- @author jose@josellausas.com
 ---------------------------------------------------------------
 local class = require 'middleclass'
-local MovingObject = require 'LLBase.Renderer.MovingObject'
+local MovingObject = require 'engine.objects.abstract.MovingObject'
 local Player = class('Player', MovingObject)
 
 --[[ The parameters for tweaking the player ]]
-local _DefaultConfig = 
+local _DefaultConfig =
 {
 	defaultHP = 100,
 	defaultDamage = 10,
@@ -46,7 +46,7 @@ function Player:isAlive()
 end
 
 ---------------------------------------------------------------
--- Respawns the player at a given position 
+-- Respawns the player at a given position
 --
 -- @number x The x coordinate
 -- @number y The y coordinate

@@ -49,10 +49,10 @@ function colMan:init(mapWidth, mapHeight, numXDivisions, numYDivisions)
 		for col=1,numYDivisions do
 
 			print("Creating container: " ..row .. " - " .. col)
-			
+
 			local container = { xquad = row, yquad = col, objects = {} }
 			table.insert(rowContainer, container)
-		
+
 		end
 
 		table.insert(self.mapQuadrants, rowContainer)
@@ -84,7 +84,7 @@ end
 
 -----------------------------------------------------------
 -- Gets the sector keys for the given coordinates
--- 
+--
 -- @number coordX The x coordinates
 -- @number coordY The y coordinates
 -- @return **(Array)** __[x,y]__ The x and y coordinate
@@ -127,7 +127,7 @@ end
 function colMan:update(dt, player)
 	-- Update the physics world:
 	self.world:update(dt)
-	
+
 
 	local playerQuadrant = self:getContainerForCoords(player.x, player.y)
 

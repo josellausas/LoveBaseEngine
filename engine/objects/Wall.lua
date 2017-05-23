@@ -1,6 +1,6 @@
 --[[Wall]]
 local class = require 'middleclass'
-local PhysicalObject = require "LLBase.Renderer.PhysicalObject"
+local PhysicalObject = require "engine.objects.abstract.PhysicalObject"
 
 local Wall = class('Wall', PhysicalObject)
 

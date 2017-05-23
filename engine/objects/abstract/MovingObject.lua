@@ -5,7 +5,7 @@
 -- @module MovingObject
 ---------------------------------------------------------------
 local class 		= require("middleclass")
-local RenderObject 	= require("LLBase.Renderer.RenderObject")
+local RenderObject 	= require("engine.objects.abstract.RenderObject")
 
 local rotate90 = math.rad(90)
 
@@ -85,7 +85,7 @@ end
 ---------------------------------------------------------------
 function MovingObject:update(dt)
 	RenderObject.update(self, dt)
-	
+
 	-- Move towards the forwards vector at the given speed.
 	local fwdVector = {
 		x = math.cos(self.heading),
@@ -103,7 +103,13 @@ end
 function MovingObject:draw()
 	if(self.renderFlag == true) then
 		-- Completely overrides parent's implementation
-		love.graphics.draw(self.image, self.x, self.y, self.heading + rotate90, self.scale.x, self.scale.y, self.spec.offX, self.spec.offY)
+		love.graphics.draw(
+			self.image,
+			self.x, self.y,
+			self.heading + rotate90,
+			self.scale.x, self.scale.y,
+			self.spec.offX, self.spec.offY
+		)
 	end
 	-- Draw the debug thing
 	self:drawDebug()
@@ -126,7 +132,7 @@ function MovingObject:distSqToPosition(x,y)
 	return squaredDistance
 end
 
---------------------------------------------------------------- 
+---------------------------------------------------------------
 -- Checks if we are inside the given circle ({x,y,r})
 --
 -- @return true if collision

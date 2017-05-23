@@ -1,7 +1,7 @@
 --[[ Una camara para Love2D por Llau ]]
 
 --[[ The camera table]]
-c = {
+local c = {
 	x = 0,
 	y = 0,
 	scaleX = 4,
