@@ -32,7 +32,7 @@
 
 <h2>Contents</h2>
 <ul>
-<li><a href="#Tables">Tables</a></li>
+<li><a href="#Functions">Functions</a></li>
 </ul>
 
 
@@ -43,13 +43,13 @@
   <li><a href="../modules/engine.SFX.html">engine.SFX</a></li>
   <li><a href="../modules/Behaviors.html">Behaviors</a></li>
   <li><a href="../modules/engine.objects.Agent.html">engine.objects.Agent</a></li>
-  <li><a href="../modules/engine.objects.Enemy.html">engine.objects.Enemy</a></li>
+  <li><strong>engine.objects.Enemy</strong></li>
   <li><a href="../modules/Player.html">Player</a></li>
   <li><a href="../modules/Turret.html">Turret</a></li>
   <li><a href="../modules/MovingObject.html">MovingObject</a></li>
   <li><a href="../modules/PhysicalObject.html">PhysicalObject</a></li>
   <li><a href="../modules/RenderObject.html">RenderObject</a></li>
-  <li><strong>levels.level01</strong></li>
+  <li><a href="../modules/levels.level01.html">levels.level01</a></li>
   <li><a href="../modules/levels.level02.html">levels.level02</a></li>
   <li><a href="../modules/main.html">main</a></li>
   <li><a href="../modules/tests.html">tests</a></li>
@@ -60,23 +60,26 @@
 
 <div id="content">
 
-<h1>Module <code>levels.level01</code></h1>
-<p>Level 01
- The first level of the game</p>
+<h1>Module <code>engine.objects.Enemy</code></h1>
+<p>Enemy module</p>
 <p>
 
 </p>
     <h3>Info:</h3>
     <ul>
-        <li><strong>Author</strong>: jose@zunware.com</li>
+        <li><strong>Author</strong>: jose@josellausas.com</li>
     </ul>
 
 
-<h2><a href="#Tables">Tables</a></h2>
+<h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#level01">level01</a></td>
-	<td class="summary">First level</td>
+	<td class="name" nowrap><a href="#initialize">initialize (img)</a></td>
+	<td class="summary">Initializes a new Enemy</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#respawn">respawn (x, y)</a></td>
+	<td class="summary">Respawns the enemy at the given position</td>
 	</tr>
 </table>
 
@@ -84,43 +87,46 @@
 <br/>
 
 
-    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
 
     <dl class="function">
     <dt>
-    <a name = "level01"></a>
-    <strong>level01</strong>
+    <a name = "initialize"></a>
+    <strong>initialize (img)</strong>
     </dt>
     <dd>
-    First level
+    Initializes a new Enemy
 
 
-    <h3>Fields:</h3>
+    <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">name</span>
-        The name
+        <li><span class="parameter">img</span>
+         <strong>(Image)</strong> The image for this enemy
         </li>
-        <li><span class="parameter">levelType</span>
-        The level type
-        </li>
-        <li><span class="parameter">numAI</span>
-        Number of AI
-        </li>
-        <li><span class="parameter">numTurrets</span>
-        Number of AI Turrets
-        </li>
-        <li><span class="parameter">targetRadius</span>
-        Targeting radius
-        </li>
-        <li><span class="parameter">speedRage</span>
+    </ul>
 
 
 
+
+
+</dd>
+    <dt>
+    <a name = "respawn"></a>
+    <strong>respawn (x, y)</strong>
+    </dt>
+    <dd>
+    Respawns the enemy at the given position
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The x coordinate
         </li>
-        <li><span class="parameter">max</span>
-
-
-
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The y coordinate
         </li>
     </ul>
 
