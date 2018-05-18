@@ -12,8 +12,6 @@ Arhitecture goals
 - Convention OVER configuration
 
 
-
-
 Directory Structure
 --------------------
 
@@ -47,5 +45,5 @@ Wish-list
 + Particle Editor
 + Executable Packager
 
-    
+
 
